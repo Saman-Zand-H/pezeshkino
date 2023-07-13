@@ -1,0 +1,61 @@
+from django.db import models
+
+
+class Specialties(models.TextChoices):
+    Midwifery = "MW", "متخصص مامایی"
+    Dentist = "DT", "دندانپرشک"
+    Gynecology = "GC", "متخصص زنان"
+    Ophtalmology = "OPHM", "متخصص چشم پزشک"
+    Neurosurgery = "NS", "جراح مغز و اعصاب"
+    Neurology = "NL", "متخصص مغز و اعصاب"
+    Optometry = "OM", "بینایی سنجی"
+    Otorhinolaryngology = "ORLG", "حلق و گوش و بینی"
+    Psychiaterist = "PST", "روانپزشک"
+    Pediatric = "PDT", "متخصص اطفال"
+    Psycologist = "PLG", "روانشناس"
+    Cardiologist = "CL", "متخصص قلب و عروق"
+    Dermatologist = "DMT", "پوست و مو و زیبایی"
+    Infectionalogist = "ILG", "متخصص بیماری های عفونی و گرمسیری"
+    Chiropracter = "CPR", "متخصص کایروپرکتیک"
+    Anaethetic = "AT", "متخصص بیهوشی"
+    Internist = "INN", "داخلی"
+    SportsMedicine = "SM", "پزشکی ورزشی"
+    Urologist = "UL", "متخصص اورولوژی"
+    MedicalGeneticist = "MG", "ژنتیک"
+    SpeechTherapist = "ST", "متخصص گفتار درمانی"
+    Rheumatologist = "RT", "فوق تخصص روماتولوژی"
+    Orthopedist = "OP", "متخصص ارتوپدی"
+    Gastroenterologist = "GEL", "متخصص گوارش"
+    Pulmanologist = "PUL", "متخصص ریه"
+    Nephrologist = "NPHL", "فوق تخصص کلیه"
+    Endocrinologist = "ERNL", "متخصص غدد"
+    Dietitian = "DTT", "متخصص تغذیه"
+    HematologistOncologist = "HO", "فوق تخصص خون و سرطان شناسی"
+    Radiologist = "RL", "رادیولوژی و سونوگرافی"
+    Physiatrist = "PHST", "طب فیزیکی و توانبخشی"
+    Radiotherapist = "RDTP", "رادیوتراپی"
+    Generalsurgeon = "GSE", "جراح عمومی"
+    Physiotherapist = "PTP", "فیزیوتراپی"
+    PlasticReconstructiveSurgeon = "PRS", "متخصص جراح پلاستیک"
+    PrimaryCarePhysician = "PCP", "پزشک عمومی"
+    MaxillofacialOralSurgeon = "MFOS", "جراح فک و صورت"
+    Audiometrist = "AM", "شنوایی سنجی"
+    
+    
+class DaysOfWeek(models.IntegerChoices):
+    Monday = 1, "دوشنبه"
+    Tuesday = 2, "سه‌شنبه"
+    Wednesday = 3, "چهارشنبه"
+    Thursday = 4, "پنج‌شنبه"
+    Friday = 5, "جمعه"
+    Saturday = 6, "شنبه"
+    Sunday = 7, "یکشنبه"
+    
+    
+class OnlineVisitSocialMedias(models.TextChoices):
+    Whatsapp = "W", "واتساپ"
+    Telegram = "T", "تلگرام"
+    Ita = "It", "ایتا"
+    Rubika = "R", "روبیکا"
+    Instagram = "In", "اینستاگرام"
+    

@@ -7,7 +7,7 @@
                 :msg="alert.alertMsg" />
     </Teleport>
     <div class="my-8 mx-5 px-3">
-        <h1 class="text-2xl text-right">تغییر مشخصات</h1>
+        <h1 class="text-3xl text-right">تغییر مشخصات</h1>
         <div>
             <div class="w-fit mx-auto">
                 <input  @change="onImageChange" class="hidden absolute" id="picture_input" type="file">

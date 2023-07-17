@@ -21,20 +21,14 @@
                                 </span>
                                 <i class="fa fa-pencil"></i>
                             </div>
-                            <div class="text-xs">09226761449</div>
+                            <div class="text-xs">{{ user.phonenumber || "بدون شماره" }}</div>
                         </router-link>
                     </div><hr class="my-5">
                     <ul class="my-2 px-4 text-lg flex flex-col gap-9 py-4">
                         <li>
-                            <router-link :to="{ name: 'home' }" class="flex gap-3 items-center justify-end">
+                            <router-link :to="{ name: 'profile_appointments' }" class="flex gap-3 items-center justify-end">
                                 نوبت های من
                                 <i class="fa fa-calendar-days"></i>
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link :to="{ name: 'home' }" class="flex gap-3 items-center justify-end">
-                                پزشکان نشانگذاری شده
-                                <i class="fa fa-bookmark"></i>
                             </router-link>
                         </li>
                     </ul>

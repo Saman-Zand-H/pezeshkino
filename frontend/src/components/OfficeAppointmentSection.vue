@@ -6,7 +6,7 @@
     <fieldset class="px-9 w-full border border-gray-300 border-dashed" v-for="office in doctor.offices">
         <legend class="px-4 ms-auto text-xl text-gray-600">{{ office.office_title }}</legend>
         <div class="py-6 px-4 w-full">
-            <OfficeMap :office="office" />
+            <OfficeMap :element_id="office.id" :office="office" />
             <p class="mt-8 mx-6 text-sm text-right">
                 آدرس : {{ office.address }}
             </p>

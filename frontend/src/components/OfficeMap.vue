@@ -1,5 +1,5 @@
 <template>
-    <div :id="['map', office.id].join('_')" class="h-72 w-full z-0"></div>
+    <div :id="['map', element_id].join('_')" class="h-72 w-full z-0"></div>
 </template>
 
 <script>
@@ -9,7 +9,8 @@
     export default {
         name: 'OfficeMap',
         props: {
-            office: Object
+            office: Object,
+            element_id: Number
         },
         mounted() {
             const office = this.$props.office
@@ -20,9 +21,8 @@
                 iconUrl: require('leaflet/dist/images/marker-icon.png'),
                 shadowUrl: require('leaflet/dist/images/marker-shadow.png')
             })
-
             let map = L
-                        .map(`map_${office.id}`)
+                        .map(`map_${this.$props.element_id}`)
                         .setView([office.location.y, office.location.x], 13)
 
             L

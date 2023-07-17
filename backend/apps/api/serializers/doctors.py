@@ -63,6 +63,8 @@ class DoctorOfficeSerializer(ModelSerializer):
         write_only=True, queryset=City.objects.all()
     )
     location = serializers.SerializerMethodField()
+    doctor = serializers.StringRelatedField()
+    doctor_specialty = serializers.SerializerMethodField()
     earliest_appointment = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -78,6 +80,7 @@ class DoctorOfficeSerializer(ModelSerializer):
             "office_title",
             "phonenumber",
             "doctor",
+            "doctor_specialty",
             "created_at",
         ]
     
@@ -93,6 +96,9 @@ class DoctorOfficeSerializer(ModelSerializer):
     
     def get_phonenumber(self, obj):
         return "-".join(obj.phonenumber.as_national.split(" ")[::-1])
+    
+    def get_doctor_specialty(self, obj):
+        return obj.doctor.get_specialty_display()
     
     def get_availability_days(self, obj):
         availability_days = obj.office_availability.all()

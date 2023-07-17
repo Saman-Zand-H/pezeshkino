@@ -1,12 +1,13 @@
 from datetime import datetime
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .utils import (get_earliest_available_appointment, 
                     get_available_times_in_range, 
                     check_availability)
+from .permissions import IsDoctor
 from doctors.enums import Specialties
 from appointments.models import Appointment
 from doctors.models import AvailabilityTime, AvailabilityDay, DoctorOffice
@@ -62,11 +63,9 @@ class GetFreeTimesView(APIView):
 
 
 class MakeAppointmentView(APIView):
-    def post(self, request, format=None):
-        if not request.user.is_authenticated:
-            return Response({"message": "you need to authenticated."},
-                            status=status.HTTP_403_FORBIDDEN)
-        
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, format=None):        
         data = MakeAppointmentSerializer(data=request.data)
         if not data.is_valid():
             return Response({"message": data.errors},
@@ -89,3 +88,21 @@ class MakeAppointmentView(APIView):
         return Response({"message": "the creation was successful.",
                          "appointment": AppointmentSerializer(appointment).data},
                         status=status.HTTP_201_CREATED)        
+
+
+class PatientAppointmentsView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        appointments = request.user.appointments.all()
+        data = AppointmentSerializer(appointments, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class DoctorAppointmentRequestsView(APIView):
+    permission_classes = [IsDoctor]
+
+    def get(self, request, format=None):
+        appointments = Appointment.objects.filter(office__doctor__user=request.user)
+        data = AppointmentSerializer(appointments, many=True).data
+        return Response(data, status.HTTP_200_OK)

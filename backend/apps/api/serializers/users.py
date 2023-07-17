@@ -42,6 +42,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             UserModel.USERNAME_FIELD, 
             "first_name", 
             "last_name", 
+            "user_type",
             'username',
             "name",
             "city",
@@ -51,7 +52,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         ]
         model = UserModel
         fields = ('pk', *extra_fields)
-        read_only_fields = ["pk", "email"]
+        read_only_fields = ["pk", "email", "user_type"]
     
     def validate(self, attrs):
         data = super().validate(attrs)

@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -7,6 +8,10 @@ from doctors.models import (AvailabilityTime,
 
 
 class Appointment(models.Model):
+    uuid = models.UUIDField(default=uuid4,
+                            unique=True,
+                            auto_created=True,
+                            editable=False)
     time = models.ForeignKey(AvailabilityTime,
                              on_delete=models.SET_NULL,
                              null=True,

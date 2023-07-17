@@ -29,31 +29,22 @@
                                     <MenuItems class="absolute right-0 z-50 mt-2 w-60 origin-top-right rounded-md bg-white shadow-sm ring-1 ring-slate-400">
                                         <div class="py-3 text-center">
                                             <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <a 
-                                                    href="#" 
+                                                <router-link
+                                                    :to="{ name: 'profile_edit' }"
                                                     :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
                                                     >
                                                     تغییر مشخصات
                                                     <i class="fas fa-pencil px-2"></i>
-                                                </a>
+                                                </router-link>
                                             </MenuItem>
                                             <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <a 
-                                                    href="#" 
-                                                    :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
-                                                    >
-                                                    پزشکان نشانگذاری شده
-                                                    <i class="fas fa-bookmark px-2"></i>
-                                                </a>
-                                            </MenuItem>
-                                            <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <a 
-                                                    href="#" 
+                                                <router-link
+                                                    :to="{ name: 'profile_appointments' }"
                                                     :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
                                                     >
                                                     نوبت های من
                                                     <i class="fa fa-calendar-days px-2"></i>
-                                                </a>
+                                                </router-link>
                                             </MenuItem>
                                         </div>
                                     </MenuItems>

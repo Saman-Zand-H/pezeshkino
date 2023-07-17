@@ -60,5 +60,8 @@ urlpatterns = [
          name="get_free_times"),
     path(route="make_appointment/",
          view=views.MakeAppointmentView.as_view(),
-         name="make_appointment")
+         name="make_appointment"),
+    path(route="patient/get_appointments/",
+         view=views.PatientAppointmentsView.as_view(),
+         name="patient_appointments")
 ] + router.urls

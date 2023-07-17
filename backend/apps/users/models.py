@@ -131,5 +131,4 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     @property
     def name(self):
-        return (f"{'DR.' if self.user_type == 'D' else '' } "
-                f"{self.first_name.title()} {self.last_name.title()}").strip()
+        return f"{self.first_name.title()} {self.last_name.title()}"

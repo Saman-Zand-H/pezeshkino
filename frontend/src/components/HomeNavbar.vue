@@ -21,14 +21,14 @@
                                         About
                                     </router-link>
                                 </li>
-                                <!-- <li>
-                                    <router-link :to="{ name: 'signup' }" class="navbar-link text-black">
-                                        Signup
-                                    </router-link>
-                                </li> -->
-                                <li>
+                                <li v-if="Authenticated">
                                     <router-link :to="{ name: 'login' }" class="navbar-link text-black">
                                         Login
+                                    </router-link>
+                                </li>
+                                <li v-else>
+                                    <router-link :to="{ name: 'user' }" class="navbar-link text-black">
+                                        <i class="fa fa-user text-xl"></i>
                                     </router-link>
                                 </li>
                             </ul>
@@ -77,7 +77,14 @@
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li> -->
-                    <li class="border-t border-b border-white py-2 ps-1 flex">
+                    <li v-if="Authenticated" class="border-t border-b border-white py-2 ps-1 flex">
+                        <router-link :to="{ name: 'user' }">
+                            {{ user.first_name }} {{ user.last_name }}
+                            <i class="fa fa-user"></i> 
+                        </router-link>
+                        <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
+                    </li>
+                    <li v-else class="border-t border-b border-white py-2 ps-1 flex">
                         <router-link :to="{ name: 'login' }">
                             Login
                         </router-link>
@@ -90,17 +97,35 @@
 </template>
 
 <script>
+    import { mapActions, mapState } from 'vuex'
+    import AuthManager from '@/_helpers/auth'
 
     export default {
         name: 'HomeNavbar',
+        data() {
+            return {
+                Authenticated: undefined
+            }
+        },
+        computed: {
+            ...mapState(["user"])
+        },
+        async created() {
+            this.Authenticated = await AuthManager.isAuthenticated()
+            this.updateUserInfo()
+        },
         props: {
             isActive: Boolean
         },
         mounted() {
             window.addEventListener('scroll', this.navScrolled)
         },
+        beforeUnmount() {
+            window.removeEventListener('scroll', this.navScrolled)
+        },
         emits: ["toggle-collapse"],
         methods: {
+            ...mapActions(["updateUserInfo"]),
             navScrolled(e) {
                 if (document.body.scrollTop >= 30 || document.documentElement.scrollTop >= 30) {
                     document.querySelector("#homeNavHeader").classList.remove("bg-transparent", "text-black")

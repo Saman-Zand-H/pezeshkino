@@ -7,11 +7,11 @@ export default {
     },
     getters: {
         getProvinces(state) {
-            return state.provinces_cities.map(v => { return v.name })
+            return state.provinces_cities.map(v => { return { name: v.name, id: v.id } })
         },
         getCities: (state) => (ostan_name) => {
             return state.provinces_cities.find(obj => obj.name === ostan_name)
-        }
+        },
     },
     mutations: {
         updateLocations(state, payload) {

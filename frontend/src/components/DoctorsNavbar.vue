@@ -51,7 +51,7 @@
                                                     href="#" 
                                                     :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
                                                     >
-                                                    قرار های ملاقات من
+                                                    نوبت های من
                                                     <i class="fa fa-calendar-days px-2"></i>
                                                 </a>
                                             </MenuItem>
@@ -101,7 +101,7 @@
             </div>
         </div>
         <ul :class="[navCollapsed ? 'h-0 overflow-hidden' : 'w-full px-12 py-10', 'bg-white transition-all duration-300 ease-out flex md:hidden flex-col']">
-            <li v-if="isAuthenticated" class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-200 ease-in py-8">
+            <li v-if="Authenticated" class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-200 ease-in py-8">
                 <button type="button" @click="profileNavCollapsed = !profileNavCollapsed" class="w-full">
                     {{ user.first_name }} {{ user.last_name }}
                     <i class="fa fa-user text-lg mx-2"></i> 
@@ -121,7 +121,7 @@
                     </li>
                     <li class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">
                         <router-link :to="{ name: 'home' }" class="w-full">
-                            قرار های ملافات من
+                            نوبت های من
                             <i class="fa fa-calendar-days mx-2"></i>
                         </router-link>
                     </li>
@@ -129,8 +129,8 @@
             </li>
             <li v-else class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-200 ease-in py-8">
                 <router-link 
-                    :to="{ name: 'home' }" 
-                    class="navbar-link text-teal-950 font-bold"
+                    :to="{ name: 'login' }" 
+                    class="navbar-link text-teal-950 font-bold w-full h-full"
                 >
                     ورود / ثبت نام
                 </router-link>
@@ -165,6 +165,7 @@
 
 <script>
     import api from '@/_helpers/api'
+    import AuthManager from '@/_helpers/auth'
     import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
     import { mapState } from 'vuex'
 
@@ -188,22 +189,12 @@
             ...mapState(['user'])
         },
         async created() {
-            this.Authenticated = await this.isAuthenticated()
+            this.Authenticated = await AuthManager.isAuthenticated()
             if (this.Authenticated) {
-                const data = await api.get("/dj-rest-auth/user")
-                this.$store.dispatch("setUser", data.data)
+                try {
+                    this.$store.dispatch("updateUserInfo")
+                } catch {}
             }
         },
-        methods: {
-            async isAuthenticated() {
-                let accessToken = localStorage.getItem("access_token")
-                if (accessToken === null) {
-                    accessToken = "random"
-                }
-                const data = { token: accessToken }
-                const res = await api.post("/dj-rest-auth/token/verify/", data)
-                return res.status === 200
-            }
-        }
     }
 </script>

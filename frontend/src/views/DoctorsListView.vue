@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <DoctorsContainer :breadcrumb='["پزشکان"]' />
+        <DoctorsContainer :breadcrumb='[{title: "پزشکان", url: {name: "doctors"}}]' />
         <DoctorsListBody />
     </div>
     

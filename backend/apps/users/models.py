@@ -1,8 +1,11 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, 
+                                        BaseUserManager, 
+                                        PermissionsMixin)
+from iranian_cities.models import City
 
-from .enums import UserType
+from .enums import UserType, UserGender
 
 
 class UsersManager(BaseUserManager):
@@ -99,6 +102,12 @@ class UsersManager(BaseUserManager):
 class UserModel(AbstractBaseUser, PermissionsMixin):    
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True, null=True, blank=True)
+    gender = models.CharField(choices=UserGender.choices, max_length=10, default="justStupid")
+    city = models.ForeignKey(City,
+                             on_delete=models.SET_NULL,
+                             null=True,
+                             blank=True,
+                             related_name="city_users")
     user_type = models.CharField(max_length=1,
                                  choices=UserType.choices,
                                  default=UserType.patience)

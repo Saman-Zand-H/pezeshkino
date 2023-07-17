@@ -7,15 +7,14 @@ const api = axios.create({
 export const refreshToken = async() => {
     const refreshToken = localStorage.getItem('refresh_token')
     if (refreshToken) {
-        const response = await axios.post('/dj-rest-auth/token/refresh/', {
-            refresh: refreshToken
-        })
-
-        // if there exists the token, we consider the user authenticated
-        if (response.status === 200) {
-            localStorage.setItem('access_token', response.data.access)
-            return Promise.resolve()
-        } else if (response.status === 401) {
+        try {
+            const response = await axios.post('/api/token/refresh/', {
+                refresh: refreshToken
+            })
+            if (response.status === 200) {
+                return Promise.resolve(response.data.access)
+            }
+        } catch {
             // if the token is invalid we remove the token so we can tell 
             // they're not authenticated
             localStorage.removeItem("refresh_token")
@@ -45,10 +44,9 @@ const responseInterceptor = api.interceptors.response.use(
         api.interceptors.response.eject(responseInterceptor)
 
         try {
-            await refreshToken()
-            const accessToken = localStorage.getItem("access_token")
-            console.log(accessToken)
-            error.response.config.headers["Authorization"] = `Bearer ${accessToken}`
+            const access = await refreshToken()
+            localStorage.setItem('access_token', access)
+            error.response.config.headers["Authorization"] = `Bearer ${access}`
             return api.request(error.response.config)
         } catch (error) {
             console.error(error)

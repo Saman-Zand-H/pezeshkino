@@ -14,8 +14,8 @@
                             id="provinceInput" 
                             class="rounded-lg text-right w-full h-14 mt-1.5 shadow-lg hover:cursor-pointer"
                            >
-                        <option v-for="ostan in getProvinces" :key="ostan">
-                            {{ ostan }}
+                        <option :value="ostan.id" v-for="ostan in getProvinces" :key="ostan.id">
+                            {{ ostan.name }}
                         </option>
                     </select>
                 </div>
@@ -131,7 +131,7 @@
                 }
             },
             selectProvince(e) {
-                const cities = this.locations.provinces_cities.find(v => v.name == e.target.value).cities
+                const cities = this.locations.provinces_cities.find(v => v.id == e.target.value).cities
                 const selectElement = document.getElementById("cityInput")
                 selectElement.innerHTML = ""
                 let node;
@@ -148,13 +148,13 @@
             },
             performSearch(e) {
                 e.preventDefault()
+                const searchObj = {}
+                if (this.searchTerm != "") searchObj["search"] = this.searchTerm
+                if (this.specialty != "") searchObj["specialty"] = this.specialty
+                if (this.city != "") searchObj["city"] = this.city
                 const data = {
                     page: this.$route.params.page,
-                    searchObj: {
-                        city: this.$data.city,
-                        specialty: this.$data.specialty,
-                        search: this.$data.searchTerm
-                    }
+                    searchObj: searchObj
                 }
                 this.$store.dispatch("doctors/searchDoctors", data)
             }

@@ -1,6 +1,6 @@
 <template>
   <div class="relative w-full">
-    <HomeNavbar :isActive="isActive" @toggle-collapse="toggleCollapse" />
+    <HomeNavbar :isActive="isActive" @toggle-collapse="this.isActive = !this.isActive" />
     <div :class="[isActive ? 'brightness-50' : '', 'w-full transition-all duration-300 h-full relative']">
       <HomeSection />
     </div>
@@ -11,7 +11,6 @@
 // @ is an alias to /src
 import HomeNavbar from '@/components/HomeNavbar.vue'
 import HomeSection from '@/components/HomeSection.vue'
-import AlertMessage from '@/components/AlertMessage.vue'
 
 export default {
   name: 'HomeView',
@@ -25,18 +24,19 @@ export default {
     }
   }, 
   methods: {
-    toggleCollapse() {
-      this.isActive = !this.isActive
+    handleScroll(e) {
+      if (!(document.querySelector("#navSidebar").contains(e.target) || e.target.id === "navToggleMenuBtn")) {
+        this.isActive = !this.isActive
+      }
     }
   },
   updated() {
     if (this.isActive) {
-      window.addEventListener('click', e => {
-        if (!(document.querySelector("#navSidebar").contains(e.target) || e.target.id === "navToggleMenuBtn")) {
-          this.isActive = !this.isActive
-        }
-      })
+      window.addEventListener('click', this.handleScroll)
     }
+  },
+  beforeUnmount() {
+    removeEventListener('click', this.handleScroll)
   }
 }
 </script>

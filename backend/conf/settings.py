@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import sys, os
+from datetime import timedelta
 from environs import Env
 from pathlib import Path
 
@@ -167,7 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication"
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
     ]
 }
 
@@ -175,7 +176,13 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': False,
     "REGISTER_SERIALIZER": "api.serializers.users.CustomRegisterSerializer",
-    "USER_DETAILS_SERIALIZER": "api.serializers.users.CustomRegisterSerializer"
+    "USER_DETAILS_SERIALIZER": "api.serializers.users.CustomUserDetailsSerializer"
+}
+
+SIMPLE_JWT = {
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=8),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "api.serializers.users.CustomTokenObtainPairSerializer"
 }
 
 

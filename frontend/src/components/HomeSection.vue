@@ -26,10 +26,11 @@
                         <option class="text-right" value="">استان</option>
                         <option 
                                 v-for="ostan in getProvinces" 
-                                :key="ostan" 
+                                :value="ostan.id"
+                                :key="ostan.id" 
                                 class="text-right"
                                >
-                            {{ ostan }}
+                            {{ ostan.name }}
                         </option>
                     </select>
                     <select 
@@ -113,7 +114,7 @@
                 }
             },
             selectProvince(e) {
-                const cities = this.locations.provinces_cities.find(v => v.name == e.target.value).cities
+                const cities = this.locations.provinces_cities.find(v => v.id == e.target.value).cities
                 const selectElement = document.getElementById("shahrSelect")
                 selectElement.innerHTML = ""
                 let node;
@@ -125,11 +126,12 @@
                 }
             },
             searchAll() {
+                const query = {}
+                if (this.searchText) query["search"] = this.searchText
+                if (this.city) query["city"] = this.city
                 this.$router.push({
                     path: 'doctors',
-                    query: {
-                        search: this.$data.searchText
-                    }
+                    query: query
                 })
             }
         },

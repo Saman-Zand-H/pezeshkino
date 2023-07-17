@@ -23,7 +23,7 @@
                                    type="text" 
                                    v-model="fieldValues.username"
                                    placeholder="نام کاربری خود را وارد کنید" 
-                                   class="border-2 invalid:text-red-500 invalid:ring-red-500 invalid:ring-2 invalid:ring-offset-1 invalid:border-red-500 shadow-md text-left focus:border-2 w-full border-gray-500 mt-3.5 py-3 px-6 rounded-lg focus:ring-4 focus:ring-black transition-all duration-200" 
+                                   class="border-2 text-right invalid:text-red-500 invalid:ring-red-500 invalid:ring-2 invalid:ring-offset-1 invalid:border-red-500 shadow-md focus:border-2 w-full border-gray-500 mt-3.5 py-3 px-6 rounded-lg focus:ring-4 focus:ring-black transition-all duration-200" 
                                   />
                                 <ul class="my-2 mx-3">
                                     <li class="text-red-500" v-for="error in fieldsErrors.username">{{ error }} -</li>
@@ -38,7 +38,7 @@
                                    v-model="fieldValues.password"
                                    type="password" 
                                    placeholder="رمز عبور خود را وارد کنید" 
-                                   class="border-2 invalid:text-red-500 invalid:ring-red-500 invalid:ring-2 invalid:ring-offset-1 invalid:border-red-500 shadow-md focus:border-2 text-left mt-3.5 w-full border-gray-500 py-3 px-6 rounded-lg focus:ring-4 focus:ring-black transition-all duration-200" 
+                                   class="border-2 text-right invalid:text-red-500 invalid:ring-red-500 invalid:ring-2 invalid:ring-offset-1 invalid:border-red-500 shadow-md focus:border-2 mt-3.5 w-full border-gray-500 py-3 px-6 rounded-lg focus:ring-4 focus:ring-black transition-all duration-200" 
                                   />
                                 <ul class="my-2 mx-3">
                                     <li class="text-red-500" v-for="error in fieldsErrors.password">{{ error }} -</li>
@@ -75,7 +75,6 @@
 
 <script>
     import { mapMutations, mapState, mapActions } from 'vuex'
-    import Cookie from 'js-cookies'
     import AlertMessage from '@/components/AlertMessage.vue'
     import HomeNavbar from '@/components/HomeNavbar.vue'
     import HomeFooter from '@/components/HomeFooter.vue'
@@ -112,7 +111,7 @@
             toggleCollapse() {
                 this.isActive = !this.isActive
             },
-            ...mapActions(["user", "login"]),
+            ...mapActions(["login"]),
             ...mapMutations(["UPDATE_USER"]),
             async submitForm(e) {
                 this.fieldsErrors.general.clear()
@@ -122,7 +121,7 @@
                 if (this.formIsValid) {
                     try {
                         this.login(this.fieldValues)
-                        this.$data.alertMsg = 'شما با موفقیت وارد شدید!'
+                        this.$data.alertMsg = 'شما با موفقیت وارد شدید! در حال انتقال...'
                         this.$data.alertType = 'success'
                         this.$data.isAlertVisible = true
                         setTimeout(
@@ -167,7 +166,15 @@
                 }
                 return (this.fieldsErrors.password.size === 0 
                         && this.fieldsErrors.username.size === 0)
-            }
+            },
+            handleClick(e) {
+                if (
+                    !(document.querySelector("#navSidebar").contains(e.target) 
+                    || e.target.id === "navToggleMenuBtn")
+                ) {
+                    this.isActive = !this.isActive
+                }
+            } 
         },
         created() {
             if (document.body.scrollTop >= 30 || document.activeElement.scrollTop >= 30) {
@@ -176,15 +183,11 @@
         },
         updated() {
             if (this.isActive) {
-                window.addEventListener('click', e => {
-                    if (
-                        !(document.querySelector("#navSidebar").contains(e.target) 
-                        || e.target.id === "navToggleMenuBtn")
-                    ) {
-                        this.isActive = !this.isActive
-                    }
-                })
+                window.addEventListener('click', this.handleClick)
             }
+        },
+        beforeUnmount() {
+            window.removeEventListener('click', this.handleClick)
         }
     }
 </script>

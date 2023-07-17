@@ -6,7 +6,7 @@ from iranian_cities.models import Province, City
 class ShahrSerializer(ModelSerializer):
     class Meta:
         model = City
-        fields = ["name", "id"]
+        fields = ["name", "id", "province"]
         
         
 class OstanSerializer(ModelSerializer):

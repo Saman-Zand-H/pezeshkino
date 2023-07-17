@@ -1,6 +1,11 @@
 <template>
     <div class="relative">
-        <DoctorsContainer :breadcrumb="['پزشکان', `دکتر ${doctor.user.name}`]" />
+        <DoctorsContainer 
+                :breadcrumb='[
+                    {title: "پزشکان", url: {name: "doctors"}}, 
+                    {title: `دکتر ${doctor.user.name}`, url: {name: "doctors", params: {username: this.$route.params.username}}}
+                ]' 
+            />
 
         <div class="flex lg:flex-row-reverse flex-col my-9 mx-10 gap-8">
             <aside class="lg:w-1/4 w-full">

@@ -8,8 +8,8 @@ services:
       - '8000:8000'
     volumes:
       - ./backend:/usr/src/app/backend/
-    # depends_on:
-    #   - db
+    depends_on:
+      - db
   # frontend:
   #   build: ./frontend
   #   # command: npm run serve
@@ -30,12 +30,6 @@ services:
       - "POSTGRES_DB=postgres"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-  adminer:
-    image: adminer:latest
-    depends_on:
-      - db
-    ports:
-      - '8020:8080'
 
 volumes:
   postgres_data:

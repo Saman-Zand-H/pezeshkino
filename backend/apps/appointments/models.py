@@ -22,3 +22,8 @@ class Appointment(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        unique_together = [
+            ["time", "datetime"]
+        ]
+    

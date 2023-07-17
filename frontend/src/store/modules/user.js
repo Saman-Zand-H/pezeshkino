@@ -16,6 +16,18 @@ export default {
             } else {
                 return "بیمار"
             }
+        },
+        async isAuthenticated(state) {
+            if (localStorage.getItem("access_token") == null) {
+                return false
+            }
+            const data = { token: localStorage.getItem("access_token") }
+            try {
+                const res = await axios.post("/dj-rest-auth/token/verify/", data)
+                return res.status === 200
+            } catch {
+                return false
+            }
         }
     },
     mutations: {
@@ -38,6 +50,7 @@ export default {
             } else {
                 localStorage.removeItem("access_token")
                 localStorage.removeItem("refresh_token")
+                commit('UPDATE_USER')
                 return Promise.reject(`status: ${res.status}, error: ${res.data}`)
             }
         }

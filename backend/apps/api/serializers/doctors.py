@@ -128,7 +128,15 @@ class OfficeIdSerializer(serializers.Serializer):
 
 class MakeAppointmentSerializer(serializers.Serializer):
     datetime = serializers.DateTimeField()
-    office_id = OfficeIdSerializer()
+    office_id = serializers.IntegerField()
+    
+    def validate(self, attrs):
+        if not attrs.get("office_id"):
+            raise serializers.ValidationError("office_id cannot be empty.")
+        office_id = attrs.get("office_id")
+        if not DoctorOffice.objects.filter(id=office_id).exists():
+            raise serializers.ValidationError("office instance doesn't exist.")
+        return super().validate(attrs)
 
 
 class DoctorSerializer(ModelSerializer):

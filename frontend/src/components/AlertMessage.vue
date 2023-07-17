@@ -2,7 +2,7 @@
     <div :class="[
         styles.bg, styles.border, styles.text,
         'lg:fixed absolute ease-out border-2 transform-gpu transition-all', 
-        'rounded-md md:w-[27%] w-full md:left-auto container text-right z-40 duration-300',
+        'rounded-md md:w-[27%] w-full md:left-auto container text-right z-[40000000] duration-300',
         'flex-row-reverse w-full items-center px-8 py-4', 
         'top-24 right-10 flex justify-between opacity-90']"
         role="alert"
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+    import 'animate.css'
+
     export default {
         name: 'AlertMessage',
         props: {
@@ -36,6 +38,10 @@
                 type: String,
                 default: 'danger'
             },
+            isVisible: {
+                type: Boolean,
+                default: false
+            },  
             colorsMap: {
                 type: Object,
                 default: {
@@ -72,6 +78,12 @@
                 default: 0
             }
         },
+        mounted() {
+            if (!this.$props.isVisible) {
+                const elem = document.getElementById('alertContainer')
+                elem.classList.add("hidden")
+            }
+        },
         computed: {
             styles() {
                 return this.$props.colorsMap[this.$props.alertType]
@@ -83,12 +95,17 @@
         watch: {
             isVisible(newState, oldState) {
                 const ttl = this.$props.ttl
-                if (newState && ttl !== 0) {
+                if (newState && ttl!==0) {
+                    const elem = document.getElementById('alertContainer')
+                    elem.classList.remove("hidden", "animate__animated", "animate__fadeOutRight")
+                }
+                if (!newState && ttl !== 0) {
                     setTimeout(() => {
                         const elem = document.getElementById('alertContainer')
                         elem.classList.add("animate__animated", "animate__fadeOutRight")
-                    }, ttl * 1000)
+                    }, ttl * 100)
                 }
+
             }
         },
         methods: {

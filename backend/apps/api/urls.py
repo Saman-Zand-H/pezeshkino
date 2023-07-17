@@ -58,7 +58,7 @@ urlpatterns = [
     path(route="get_free_times/",
          view=views.GetFreeTimesView.as_view(),
          name="get_free_times"),
-    path(route="make_appointment",
+    path(route="make_appointment/",
          view=views.MakeAppointmentView.as_view(),
          name="make_appointment")
 ] + router.urls

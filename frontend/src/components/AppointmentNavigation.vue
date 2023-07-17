@@ -10,31 +10,45 @@
                 :scrollbar="{ draggable: true }"
             >
                 <swiper-slide :key="date" v-for="(date, time_obj) in available_times">
-                    <button 
-                        class="rounded-lg border hover:border-sky-600 focus:border-sky-600 transition-colors duration-300 shadow-md py-4 px-5 text-lg" 
+                    <input 
+                        type="radio" 
+                        name="appointment_day"
+                        :value="time_obj" 
+                        :id="time_obj" 
+                        class="hidden"
+                    >
+                    <label 
+                        class="rounded-lg border hover:border-sky-600 hover:cursor-pointer text-center focus:border-sky-600 transition-colors duration-300 shadow-md py-4 px-5 text-lg" 
                         type="button" 
-                        @click.prevent="this.$data.date=time_obj"
+                        :for="time_obj"
+                        @click="this.$data.date=time_obj"
                     >
                         <h1 class="">{{ moment(time_obj).format('dddd') }}</h1>
                         <small class="text-sm">{{ moment(time_obj).format("jYYYY/jMM/jDD") }}</small>
-                    </button>
+                    </label>
                 </swiper-slide>
             </swiper>
         </div>
         <div v-if="date" class="w-full py-5 my-5 px-7 h-[450px] flex flex-row rounded-lg border gap-4">
             <div 
-                v-for="time in available_times[date]" 
-                :key="time.time" 
-                class="rounded-lg border hover:border-sky-600 focus:border-sky-600 transition-color duration-200 shadow-sm py-3 px-4 h-[3.2rem]"
+                v-for="time in available_times[date]"
+                :key="[time.date, 'T', time.time, office_id].join('')"
                >
-                <button 
-                        class="hover:cursor-pointer" 
-                        type="button" 
-                        @click.prevent="$emit('show-confirm')" 
-                        @focusout="$emit('hide-confirm')"
+                <input 
+                       name="appointment_btn" 
+                       @input="this.$parent.$emit('appointmentChange', $event.target.value.split(',')); $event.target.checked = true" 
+                       :value="[[date, 'T', time.time].join(''), office_id]" 
+                       class="hidden" 
+                       type="radio" 
+                       :id="['appointment', time.date, time.time, office_id].join('').replaceAll(':', '-')"
+                       :checked="$el.value === appointment_time"
+                    >
+                <label 
+                        :for="['appointment', time.date, time.time, office_id].join('').replaceAll(':', '-')" 
+                        class="rounded-lg border hover:border-sky-600 hover:cursor-pointer focus:border-sky-600 transition-color duration-200 shadow-sm py-3 px-4 h-[3.2rem]"
                     >
                     {{ moment(time.time, "HH:mm:ss").format("HH:mm") }}
-                </button>
+                </label>
             </div>
         </div>
     </div>
@@ -44,6 +58,10 @@
     .swiper {
         height: 450px;
         width: 120px;
+    }
+    
+    input[type="radio"]:checked+label {
+        border-color: rgb(7 89 133);
     }
 </style>
 
@@ -63,9 +81,12 @@
             Swiper,
             SwiperSlide
         },
-        emits: ['show-confirm', 'hide-confirm'],
+        emits: {
+            appointmentChange: Array
+        },
         props: {
-            office_id: {type: Number, default: 6}
+            office_id: {type: Number, default: 6},
+            appointment_time: Array
         },
         data() {
             return {

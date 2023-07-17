@@ -9,7 +9,7 @@ from .utils import (get_earliest_available_appointment,
                     check_availability)
 from doctors.enums import Specialties
 from appointments.models import Appointment
-from doctors.models import AvailabilityTime
+from doctors.models import AvailabilityTime, AvailabilityDay, DoctorOffice
 from .serializers.doctors import OfficeIdSerializer, MakeAppointmentSerializer
 from .serializers.appointments import AppointmentSerializer
 
@@ -35,8 +35,8 @@ class GetEarliestFreeTimeView(APIView):
             office_id = data.validated_data.get("office_id")
             earliest = get_earliest_available_appointment(office_id)
             results = {
-                "day": earliest.day.get_day_of_week_display(),
-                "time": earliest.time
+                "day": earliest["obj"].day.get_day_of_week_display(),
+                "time": earliest["obj"].time
             }
             return Response(results, status=status.HTTP_200_OK)
         return Response({"message": data.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -69,21 +69,23 @@ class MakeAppointmentView(APIView):
         
         data = MakeAppointmentSerializer(data=request.data)
         if not data.is_valid():
-            return Response({"message": data.error_messages},
+            return Response({"message": data.errors},
                             status=status.HTTP_400_BAD_REQUEST)
             
         office_id = data.validated_data.get("office_id")
+        office = DoctorOffice.objects.get(id=office_id)
         datetime_obj: datetime = data.validated_data.get("datetime")
         
         if not check_availability(office_id, datetime_obj):
-            return Response({"message": "this time is not available for appointemnt."},
+            return Response({"message": "this time is not available for appointment."},
                             status=status.HTTP_406_NOT_ACCEPTABLE)
         
-        availablity_time_obj = AvailabilityTime.objects.get(time=datetime_obj.time())
+        availability_day_obj = AvailabilityDay.objects.get(office=office_id, day_of_week=datetime_obj.isoweekday())
+        availability_time_obj = AvailabilityTime.objects.get(time=datetime_obj.time(), day=availability_day_obj)
         appointment = Appointment.objects.create(patient=request.user,
-                                                 office=office_id,
-                                                 time=availablity_time_obj,
+                                                 office=office,
+                                                 time=availability_time_obj,
                                                  datetime=datetime_obj)
         return Response({"message": "the creation was successful.",
-                         "appointment": AppointmentSerializer(appointment)},
+                         "appointment": AppointmentSerializer(appointment).data},
                         status=status.HTTP_201_CREATED)        

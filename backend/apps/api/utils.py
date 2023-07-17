@@ -1,7 +1,7 @@
 from typing import List
 from django.utils import timezone
 from django.db.models import Q, QuerySet
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 from appointments.models import Appointment
 from doctors.models import AvailabilityDay, AvailabilityTime
@@ -25,6 +25,7 @@ def get_available_times(office_id: int, date_obj: date) -> QuerySet[Availability
         .objects
         .filter(Q(day__day_of_week=date_obj.isoweekday())
                 & Q(day__office__id=office_id))
+        .exclude(id__in=taken_appointments.values("time"))
         .order_by("time")
     )
     return free_times
@@ -35,12 +36,12 @@ def get_available_times_in_range(
         timestamp=timezone.now().timestamp(), 
         date_range=7
     ) -> List[dict[datetime, QuerySet[AvailabilityTime]]]:
-    base_datetime_obj = datetime.fromtimestamp(timestamp)
+    base_datetime_obj = datetime.fromtimestamp(timestamp).date()
     results = []
     for i in range(date_range):
         date_delta = base_datetime_obj + timedelta(days=i)
         available_time = get_available_times(office_id, date_delta)
-        if available_time is not None:
+        if available_time and available_time.exists():
             results.append(
                 {"obj": available_time,
                  "date": date_delta}

@@ -174,7 +174,8 @@ REST_FRAMEWORK = {
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': False,
-    "REGISTER_SERIALIZER": "api.serializers.users.CustomRegisterSerializer"
+    "REGISTER_SERIALIZER": "api.serializers.users.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "api.serializers.users.CustomRegisterSerializer"
 }
 
 

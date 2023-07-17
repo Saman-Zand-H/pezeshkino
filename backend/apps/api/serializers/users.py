@@ -16,18 +16,16 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
                                      read_only=True)
     
     class Meta:
-        extra_fields = ["picture", "name"]
-        if hasattr(UserModel, 'USERNAME_FIELD'):
-            extra_fields.append(UserModel.USERNAME_FIELD)
-        if hasattr(UserModel, 'EMAIL_FIELD'):
-            extra_fields.append(UserModel.EMAIL_FIELD)
-        if hasattr(UserModel, 'first_name'):
-            extra_fields.append('first_name')
-        if hasattr(UserModel, 'last_name'):
-            extra_fields.append('last_name')
+        extra_fields = []
+        extra_fields.extend(
+            [UserModel.USERNAME_FIELD, 
+             "first_name", 
+             "last_name", 
+             "name",
+             "picture"])
         model = UserModel
         fields = ('pk', *extra_fields)
-        read_only_fields = ('email',)
+        read_only_fields = ["pk", "email"]
 
 
 class CustomRegisterSerializer(RegisterSerializer):

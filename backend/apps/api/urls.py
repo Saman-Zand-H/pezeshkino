@@ -49,7 +49,7 @@ router.register(
 
 
 urlpatterns = [
-    path(route="specialties",
+    path(route="specialties/",
          view=views.ListSpecialtiesView.as_view(),
          name="specialties"),
     path(route="get_free_times/earliest",

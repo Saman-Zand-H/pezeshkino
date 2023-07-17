@@ -29,11 +29,7 @@ export const refreshToken = async() => {
 api.interceptors.request.use(
     config => {
         const accessToken = localStorage.getItem("access_token")
-            // handling auth
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`
-        }
-
+        config.headers.Authorization = `Bearer ${accessToken}`
         return config
     },
     error => Promise.reject(error)

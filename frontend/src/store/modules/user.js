@@ -1,11 +1,12 @@
-import axios from 'axios'
+import api from '@/_helpers/api'
 
 export default {
     state: {
         username: null,
         first_name: null,
         last_name: null,
-        user_type: null
+        user_type: null,
+        picture: null
     },
     getters: {
         get_usertype_display(state) {
@@ -16,31 +17,21 @@ export default {
             } else {
                 return "بیمار"
             }
-        },
-        async isAuthenticated(state) {
-            if (localStorage.getItem("access_token") == null) {
-                return false
-            }
-            const data = { token: localStorage.getItem("access_token") }
-            try {
-                const res = await axios.post("/dj-rest-auth/token/verify/", data)
-                return res.status === 200
-            } catch {
-                return false
-            }
         }
     },
     mutations: {
         UPDATE_USER(state, payload) {
+            console.log(payload)
             state.username = payload.username
             state.first_name = payload.first_name
             state.last_name = payload.last_name
             state.user_type = payload.user_type
+            state.picture = payload.picture
         }
     },
     actions: {
         async login({ commit }, credentials) {
-            const res = await axios.post('/dj-rest-auth/login/', credentials)
+            const res = await api.post('/dj-rest-auth/login/', credentials)
             if (res.status === 200) {
                 const payload = res.data.user
                 commit('UPDATE_USER', payload)
@@ -53,6 +44,10 @@ export default {
                 commit('UPDATE_USER')
                 return Promise.reject(`status: ${res.status}, error: ${res.data}`)
             }
+        },
+        setUser({ commit }, data) {
+            console.log(data)
+            commit("UPDATE_USER", data)
         }
     }
 }

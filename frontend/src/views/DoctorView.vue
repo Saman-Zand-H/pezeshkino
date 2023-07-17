@@ -72,7 +72,6 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
 import DoctorsContainer from '@/components/DoctorsContainer.vue'
 import OfficeAppointmentSection from '@/components/OfficeAppointmentSection.vue'
 
@@ -81,9 +80,6 @@ export default {
     components: {
         DoctorsContainer,
         OfficeAppointmentSection,
-    },
-    computed: {
-        ...mapGetters(["isAuthenticated"])
     },
     data() {
         return {

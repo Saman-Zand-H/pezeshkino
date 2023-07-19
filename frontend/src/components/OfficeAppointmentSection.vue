@@ -58,7 +58,7 @@
                         class="hidden" 
                         type="radio" 
                         name="appointment_btn"
-                        :value="[[office.earliest_appointment.date, 'T', office.earliest_appointment.time].join(''), office.id]"
+                        :value="[[office.earliest_appointment.date, 'T', office.earliest_appointment.time].join(''), Number(office.id)]"
                         @input="$emit('appointmentChange', $event.target.value.split(','))"
                         :id="['earliest_btn_', office.id].join('')"
                         :checked="appointment_time === $el.value"
@@ -69,7 +69,7 @@
                             :نزدیک ترین نوبت خالی
                         </span>
                         <span class="text-sm px-3" v-if="!isEmpty(office.earliest_appointment)">
-                            {{ moment(office.earliest_appointment.date).format('dddd D jMMMM') }} - 
+                            {{ moment(office.earliest_appointment.date).format('dddd jD jMMMM') }} - 
                             ساعت
                             {{ moment(office.earliest_appointment.time, "HH:mm:ss").format('HH:mm') }}
                         </span>
@@ -124,7 +124,7 @@
                 appointment_modal_display: false,
                 confirm_display: false,
                 alert: {
-                    alertType: 'danger',
+                    alertType: 'success',
                     alertMsg: '',
                     alertTTL: 3,
                     alertVisible: false
@@ -142,41 +142,51 @@
         },
         methods: {
             async requestAppointment(e) {
-                if (this.$props.appointment_time == null || !this.dataIsValid()) {
-                    this.fireAlert('لطفا یک زمان را انتخاب کنبد')
+                if (!this.$props.appointment_time || !this.dataIsValid()) {
+                    this.fireAlert('لطفا یک زمان را انتخاب کنبد', 3, 'danger')
+                    return
                 }
                 try {
                     const data = {
-                        office_id: this.$props.appointment_time[1],
+                        office_id: Number(this.$props.appointment_time[1]),
                         datetime: this.$props.appointment_time[0]
                     }
-                    const res = await api.post("/api/make_appointment/", data)
-                    this.fireAlert('قرار ملاقات با موفقیت تنظیم شد', 3, 'success')
-                } catch(errors) {
-                    console.log(errors)
+                    const res = await api.post("/api/initiate_appointment/", data)
+                    this.fireAlert(
+                        'قرار ملاقات با موفقیت تنظیم شد. در حال انتقال به صفحه پرداخت...', 
+                        3, 
+                        'success'
+                    )
+                    window.location.assign(res.data.payLink)
+                } catch {
+                    this.fireAlert(
+                        'پرداخت با خطا مواجه شد. لطفا مجددا تلاش کنید.', 
+                        3, 
+                        'danger'
+                    )
                 }
             },
             dataIsValid() {
                 const values = this.$props.appointment_time
                 const dateValid = original_moment(values[0], moment.ISO_8601, true).isValid()
-                return dateValid && Number.isSafeInteger(values[1])
+                return dateValid && !isNaN(values[1])
             },
             fireAlert(msg, ttl = 3, type = "danger") {
-                this.$data.alert.alertVisible = true
-                this.$data.alert.alertTTL = ttl
-                this.$data.alert.alertType = type
-                this.$data.alert.alertMsg = msg
+                this.alert.alertVisible = true
+                this.alert.alertTTL = ttl
+                this.alert.alertType = type
+                this.alert.alertMsg = msg
                 setTimeout(
                     () => {
-                        this.$data.alert.alertVisible = false
+                        this.alert.alertVisible = false
                     },
                     ttl * 1000
                 )
-            }
+            },
         },
         setup() {
             moment.locale("fa", fa)
-            moment.loadPersian()
+            moment.loadPersian({ dialect: 'persian-modern' })
             return {
                 moment,
                 isEmpty

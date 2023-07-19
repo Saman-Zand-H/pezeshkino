@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'appointments',
     'api',
-    'doctors'
+    'doctors',
+    'payments'
 ]
 
 MIDDLEWARE = [

@@ -37,7 +37,7 @@
                 <input 
                        name="appointment_btn" 
                        @input="this.$parent.$emit('appointmentChange', $event.target.value.split(',')); $event.target.checked = true" 
-                       :value="[[date, 'T', time.time].join(''), office_id]" 
+                       :value="[[date, 'T', time.time].join(''), Number(office_id)]" 
                        class="hidden" 
                        type="radio" 
                        :id="['appointment', time.date, time.time, office_id].join('').replaceAll(':', '-')"

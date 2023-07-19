@@ -3,13 +3,13 @@ import AuthManager from '@/_helpers/auth'
 
 export default {
     state: {
-        username: null,
-        first_name: null,
-        last_name: null,
-        user_type: null,
-        picture: null,
-        city: null,
-        gender: null
+        username: "",
+        first_name: "",
+        last_name: "",
+        user_type: "",
+        picture: "",
+        city: "",
+        gender: ""
     },
     getters: {
         get_usertype_display(state) {

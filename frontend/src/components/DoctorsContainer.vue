@@ -3,7 +3,9 @@
         <DoctorsNavbar />
         <div class="">
             <div class="flex flex-row-reverse relative h-14 text-white text-base border-b shadow-md border-slate-500/50 bg-cyan-950 gap-2 items-center pe-6">
-                <router-link :to="{ name: 'home' }" class="hover:text-cyan-500 transition-all duration-500">صفحه اصلی</router-link>
+                <router-link :to="{ name: 'home' }" class="hover:text-cyan-500 transition-all duration-500">
+                    صفحه اصلی
+                </router-link>
                 <div v-for="item in breadcrumb" class="flex flex-row-reverse gap-3">
                     <span><i class="fa fa-circle text-cyan-700/90" style="font-size:.5rem"></i></span>
                     <router-link :to="item.url" class="hover:text-cyan-500 transition-all duration-500">{{ item.title }}</router-link>

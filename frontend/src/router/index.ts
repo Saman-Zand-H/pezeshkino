@@ -1,7 +1,9 @@
 import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
 import GeneralProfileView from '../views/GeneralProfileView.vue'
+import PaymentStatusView from '@/views/PaymentStatusView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import DoctorsListView from '../views/DoctorsListView.vue'
 import DoctorView from '../views/DoctorView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -9,7 +11,7 @@ import HomeView from '../views/HomeView.vue'
 import AuthManager from '@/_helpers/auth'
 // import SignupView from '../views/SignupView.vue'
 
-const routes = [{
+const routes: RouteRecordRaw[] = [{
         path: '/',
         name: 'home',
         component: HomeView
@@ -29,12 +31,12 @@ const routes = [{
         component: LoginView
     },
     {
-        path: '/doctors',
+        path: '/doctors/',
         name: 'doctors',
         component: DoctorsListView,
     },
     {
-        path: '/doctors/:username',
+        path: '/doctors/:username/',
         name: "doctor",
         component: DoctorView
     },
@@ -53,6 +55,11 @@ const routes = [{
                 name: 'profile_appointments'
             }
         ],
+    },
+    {
+        path: '/payment_status',
+        name: 'payment_status',
+        component: PaymentStatusView,
     }
 ]
 
@@ -62,7 +69,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, from) => {
-    if (['user', 'profile_edit'].indexOf(to.name) !== -1) {
+    if (['user', 'profile_edit', 'profile_appointments'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
         if (!is_authenticated) return { name: "login" }
     }

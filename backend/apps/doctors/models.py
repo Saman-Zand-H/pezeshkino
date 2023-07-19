@@ -1,10 +1,10 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 from iranian_cities.fields import CityField
+from django.db.models.aggregates import Avg
 from django.contrib.gis.geos.point import Point
-from django.core.exceptions import ValidationError
 from django_jalali.db.models import jDateTimeField
+from django.core.validators import MaxValueValidator
 from django.contrib.gis.db import models as gis_models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -26,6 +26,10 @@ class Doctor(models.Model):
     
     def __str__(self):
         return self.user.name
+    
+    @property
+    def score(self):
+        return self.doctor_reviews.aggregate(avg_score=Avg("score")).get("avg_score")
 
 
 class DoctorOffice(gis_models.Model):
@@ -85,3 +89,15 @@ class AvailabilityTime(models.Model):
     def __str__(self):
         return f"{self.day} : {self.time}"
     
+    
+class Review(models.Model):
+    doctor = models.ForeignKey(Doctor,
+                               on_delete=models.CASCADE,
+                               related_name="doctor_reviews")
+    by_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE,
+                                related_name="user_reviews")
+    score = models.IntegerField(validators=[MaxValueValidator(5)])
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

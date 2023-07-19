@@ -106,12 +106,6 @@
                     </li>
                     <li class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">
                         <router-link :to="{ name: 'home' }" class="w-full">
-                            پزشکان نشانگذاری شده
-                            <i class="fas fa-bookmark mx-2"></i>
-                        </router-link>
-                    </li>
-                    <li class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">
-                        <router-link :to="{ name: 'home' }" class="w-full">
                             نوبت های من
                             <i class="fa fa-calendar-days mx-2"></i>
                         </router-link>
@@ -147,7 +141,7 @@
                     :to="{ name: 'doctors' }" 
                     class="navbar-link text-teal-950 font-bold"
                 >
-                    دکتر ها
+                    پزشکان
                 </router-link>
             </li>
         </ul>

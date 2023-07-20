@@ -18,13 +18,15 @@ from doctors.enums import Specialties
 from payments.enums import PaymentStatus, Currencies
 from doctors.models import (AvailabilityTime, 
                             AvailabilityDay, 
-                            DoctorOffice)
+                            DoctorOffice,
+                            Doctor)
 from payments.models import MonetaryTransaction
 from appointments.models import Appointment
 from .serializers.payments import (TrackIdSerializer, 
                                    TransactionSerializer)
 from .serializers.doctors import (OfficeIdSerializer, 
-                                  MakeAppointmentSerializer)
+                                  MakeAppointmentSerializer,
+                                  ReviewSerializer)
 from .serializers.appointments import AppointmentSerializer
 
 
@@ -220,3 +222,34 @@ class ListByTransactionsView(APIView):
 class ListForTransactionsView(APIView):
     def get(self, request, format=None):
         return Response(TransactionSerializer(request.user.for_transactions.all(), many=True))
+
+
+class ReviewView(APIView):
+    def post(self, request, format=None):
+        if not request.user.is_authenticated:
+            return Response({"message": "you must be authenticated."},
+                            status=status.HTTP_403_FORBIDDEN)
+            
+        data = ReviewSerializer(data=request.data)
+        
+        if not data.is_valid():
+            return Response({"message": data.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
+        
+        instance = data.save(by_user=request.user)
+        return Response(ReviewSerializer(instance).data,
+                        status=status.HTTP_201_CREATED)
+        
+    def get(self, request, format=None):
+        doctor_username = str(request.GET.get("doctor_username"))
+        doctor_qs = Doctor.objects.filter(user__username=doctor_username)
+        
+        if not doctor_qs.exists():
+            return Response({"doctor_username": "no doctor with this username exists."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        
+        doctor = doctor_qs.last()
+        reviews = doctor.doctor_reviews.all()
+        return Response(ReviewSerializer(reviews, many=True).data,
+                        status=status.HTTP_200_OK)
+        

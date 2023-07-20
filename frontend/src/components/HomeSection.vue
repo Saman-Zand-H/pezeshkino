@@ -1,5 +1,5 @@
 <template>
-    <div class="block relative w-screen lg:w-full bg-contain home-block">
+    <div class="block relative w-full lg:w-full bg-contain home-block">
         <div class="flex container top-10 justify-center relative flex-wrap bg-opacity-75">
             <div class="absolute top-[7rem]">
                 <div class="text-slate-800 z-50">

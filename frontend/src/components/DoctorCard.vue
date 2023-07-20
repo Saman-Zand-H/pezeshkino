@@ -6,7 +6,7 @@
                  @mouseout="mouseoutCard"
                 >
         <div class="z-0">
-            <img :src="picture_link" :alt="['dr.', name, 'picture']" class="w-full h-40 opacity-85 shadow-lg rounded-t-md self-center">
+            <img :src="picture_link" :alt="['dr.', name, 'picture']" class="w-full h-40 overflow-hidden opacity-85 shadow-lg rounded-t-md self-center">
         </div>
         <div class="flex flex-col bg-white h-20 z-10 scale-[98%] shadow-sm card-body transition-all duration-500">
             <span class="flex flex-row-reverse items-center justify-center gap-4">

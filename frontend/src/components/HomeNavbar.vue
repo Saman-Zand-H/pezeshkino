@@ -1,5 +1,5 @@
 <template>
-    <header id="homeNavHeader" class="fixed bg-transparent z-[100] top-0 left-0 right-0 transition-all duration-300 text-black">
+    <header id="homeNavHeader" class="fixed w-full bg-transparent z-[100] top-0 left-0 right-0 transition-all duration-300 text-black">
         <div class="container">
             <div class="items-center">
                 <div class="relative flex align-baseline items-center justify-between ms-12">
@@ -21,7 +21,7 @@
                                         About
                                     </router-link>
                                 </li>
-                                <li v-if="Authenticated">
+                                <li v-if="!Authenticated">
                                     <router-link :to="{ name: 'login' }" class="navbar-link text-black">
                                         Login
                                     </router-link>
@@ -71,12 +71,6 @@
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li>
-                    <!-- <li class="border-t border-b border-white py-2 ps-1 flex">
-                        <router-link :to="{ name: signup }">
-                            Signup
-                        </router-link>
-                        <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
-                    </li> -->
                     <li v-if="Authenticated" class="border-t border-b border-white py-2 ps-1 flex">
                         <router-link :to="{ name: 'user' }">
                             {{ user.first_name }} {{ user.last_name }}

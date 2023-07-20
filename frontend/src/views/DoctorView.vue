@@ -3,7 +3,7 @@
         <DoctorsContainer 
                 :breadcrumb='[
                     {title: "پزشکان", url: {name: "doctors"}}, 
-                    {title: `دکتر ${doctor.user.name}`, url: {name: "doctor", params: {username: "saman"}}}
+                    {title: `دکتر ${doctor.user.name}`, url: {name: "doctor", params: {username: this.$route.params.username}}}
                 ]' 
             />
 
@@ -12,7 +12,7 @@
                 <div class="rounded-lg shadow-xl bg-white border flex flex-col justify-center items-center py-8">
                     <div class="h-60 w-40 mt-2 bg-white z-10">
                         <img v-if="doctor.user.picture !== null" :alt="[doctor.user.name, 'picture']" :src="doctor.user.picture"
-                            class="box-content shadow-lg w-44 h-44 overflow-clip rounded-full border-4 border-slate-200/40 -z-10">
+                            class="box-content shadow-lg h-44 aspect-video overflow-clip rounded-full border-4 border-slate-200/40 -z-10">
                         <div v-else class="-z-10 w-44 h-44 rounded-full bg-lime-800 items-center justify-center">
                             {{ doctor.user.first_name[0] }} {{ doctor.user.last_name[0] }}
                         </div>
@@ -42,15 +42,20 @@
                             درباره پزشک
                         </button>
                     </li>
+                    <li class="">
+                        <button @click="tab_page='reviews'" :class="[tab_page === 'reviews' ? 'active bg-gray-100 text-cyan-800': 'hover:bg-gray-100/50 hover:text-gray-600 text-gray-500', 'inline-block transition-all duration-200 rounded-xl text-sm py-2 px-6 font-medium text-center']">
+                            نظرات
+                        </button>
+                    </li>
                 </ul>
                 <div class="rounded-lg shadow-xl bg-white border flex flex-col justify-center relative w-full items-center py-8 px-10">
-                    <div :class="tab_page === 'office_info' ? 'w-full' : 'hidden'">
+                    <div v-if="tab_page === 'office_info'" class="w-full">
                         <OfficeAppointmentSection 
                             :doctor="doctor" 
                             :appointment_time="appointment_time" 
                             @appointmentChange="newVal => this.appointment_time=newVal" />
                     </div>
-                    <div :class="tab_page === 'about' ? 'w-full' : 'hidden'">
+                    <div v-else-if="tab_page === 'about'" class="w-full'">
                         <fieldset class="text-right px-4 border border-dashed">
                             <legend class="flex flex-row-reverse gap-3 px-4 items-center">
                                 <i class="fas fa-newspaper text-2xl"></i>
@@ -61,13 +66,54 @@
                             </pre>
                         </fieldset>
                     </div>
+                    <div v-else-if="tab_page === 'reviews'" class="w-full">
+                        <div class="flex flex-col gap-8">
+                            <router-link :to="{ name: 'new_review', params: {username: this.$route.params.username} }" class="text-center py-2.5 transition-colors duration-200 text-xl border border-sky-700 text-sky-800 rounded-xl hover:bg-sky-700 hover:text-white w-full" type="button">
+                                ثبت نظر
+                            </router-link>
+                            <div class="">
+                                <div class="flex flex-col gap-5 px-3 items-end border-t py-4" v-for="review in doctor.reviews">
+                                    <div class="flex flex-row-reverse items-center gap-3 px-3">
+                                        <div class="rounded-full bg-lime-800 text-white flex items-center justify-center text-xl w-14 aspect-square">
+                                            {{ review.by_user.first_name[0] }}
+                                        </div>
+                                        <div class="flex flex-col text-sm">
+                                            <div class="">
+                                                <span class="rounded-2xl inline-flex items-center justify-center bg-slate-300/60 px-2.5 py-1 text-center text-xs text-slate-500">ویزیت</span>
+                                                {{ review.by_user.first_name }}
+                                            </div>
+                                            <div class="">
+                                                {{ jmoment(review.update_at).format("jYYYY/jMM/jD") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-3">
+                                        <span class="flex flex-row-reverse gap-3 text-green-800" v-if="review.suggests_doctor">
+                                            <i class="fa fa-thumbs-up text-xl"></i>
+                                            پزشک را توصیه میکنم
+                                        </span>
+                                        <span class="flex flex-row-reverse gap-3 text-orange-500" v-else>
+                                            <i class="fa fa-thumbs-down text-xl"></i>
+                                            پزشک را توصیه نمیکنم
+                                        </span>
+                                    </div>
+                                    <div class="px-3 text-xs">
+                                        <b>علت مراجعه</b> : {{ review.illness }}
+                                    </div>
+                                    <div class="px-2 mb-2 text-base text-right" style="direction:rtl">
+                                        {{ review.review }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
 </template>
 
-<style>
+<style scoped>
     body {
         position: relative;
     }
@@ -79,6 +125,8 @@
 
 <script>
 import axios from 'axios'
+import jmoment from 'moment-jalaali'
+import StarRating from 'vue-star-rating'
 import DoctorsContainer from '@/components/DoctorsContainer.vue'
 import OfficeAppointmentSection from '@/components/OfficeAppointmentSection.vue'
 
@@ -87,6 +135,12 @@ export default {
     components: {
         DoctorsContainer,
         OfficeAppointmentSection,
+        StarRating
+    },
+    setup() {
+        return {
+            jmoment
+        }
     },
     data() {
         return {

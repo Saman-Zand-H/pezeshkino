@@ -1,4 +1,5 @@
 <template>
+    <DoctorsNavbar />
     <div :class="[success ? 'bg-teal-400' : 'bg-red-400', 'flex relative justify-center items-center h-screen']">
         <div class="lg:w-1/3 w-2/3 bg-white gap-2 flex flex-col rounded-md shadow-lg py-6 px-4 my-9">
             <div v-if="!success">
@@ -32,12 +33,16 @@
 </template>
 <script>
     import api from '@/_helpers/api'
+    import jmoment from 'moment-jalaali'
     import moment from 'moment'
     import fa from 'moment/locale/fa'
-    import jmoment from 'moment-jalaali'
+    import DoctorsNavbar from '@/components/DoctorsNavbar.vue'
 
     export default {
         name: 'PaymentStatusView',
+        components: {
+            DoctorsNavbar
+        },
         data() {
             return {
                 success: false,
@@ -74,7 +79,7 @@
         },
         setup() {
             moment.locale("fa", fa)
-            jmoment.loadPersian()
+            jmoment.loadPersian({ usePersianDigits: true })
             return {
                 jmoment
             }

@@ -50,12 +50,12 @@ class DaysOfWeek(models.IntegerChoices):
     Friday = 5, "جمعه"
     Saturday = 6, "شنبه"
     Sunday = 7, "یکشنبه"
-    
-    
-class OnlineVisitSocialMedias(models.TextChoices):
-    Whatsapp = "W", "واتساپ"
-    Telegram = "T", "تلگرام"
-    Ita = "It", "ایتا"
-    Rubika = "R", "روبیکا"
-    Instagram = "In", "اینستاگرام"
+
+
+class TreatmentResults(models.TextChoices):
+    Treated = "T", "درمان شدم"
+    Not_Treated = "NT", "درمان نشدم"
+    Pending = "P", "درحال درمان شدن هستم"
+    Canceled = "C", "درمان را ناتمام گذاشتم"
+    Other = "O", "سایر موارد"
     

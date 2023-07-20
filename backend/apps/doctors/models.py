@@ -1,15 +1,20 @@
+from uuid import uuid4
+from statistics import mean
 from django.db import models
 from django.conf import settings
 from iranian_cities.fields import CityField
 from django.db.models.aggregates import Avg
 from django.contrib.gis.geos.point import Point
+from django.db.models import F, ExpressionWrapper
 from django_jalali.db.models import jDateTimeField
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.functional import cached_property
 from django.contrib.gis.db import models as gis_models
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .enums import (Specialties, 
-                    DaysOfWeek)
+                    DaysOfWeek,
+                    TreatmentResults)
 
 
 class Doctor(models.Model):
@@ -27,9 +32,25 @@ class Doctor(models.Model):
     def __str__(self):
         return self.user.name
     
-    @property
-    def score(self):
-        return self.doctor_reviews.aggregate(avg_score=Avg("score")).get("avg_score")
+    @cached_property
+    def rating(self):
+        if self.doctor_reviews.exists():
+            return (
+                self
+                .doctor_reviews
+                .aggregate(
+                    avg_score=ExpressionWrapper(
+                        Avg( 
+                            F("behavior_score") 
+                            + F("elaboration_score") 
+                            + F("skills_score")
+                        ) / 3
+                        , models.DecimalField()
+                    )
+                )
+                .get("avg_score")
+            )
+        return 5.0
 
 
 class DoctorOffice(gis_models.Model):
@@ -91,13 +112,39 @@ class AvailabilityTime(models.Model):
     
     
 class Review(models.Model):
+    uuid = models.UUIDField(default=uuid4,
+                            auto_created=True,
+                            editable=False,
+                            unique=True)
     doctor = models.ForeignKey(Doctor,
                                on_delete=models.CASCADE,
                                related_name="doctor_reviews")
     by_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,
                                 related_name="user_reviews")
-    score = models.IntegerField(validators=[MaxValueValidator(5)])
+    illness = models.CharField(max_length=50)
+    treatment_result = models.CharField(choices=TreatmentResults.choices, 
+                                        max_length=2)
+    suggests_doctor = models.BooleanField(default=True)
+    behavior_score = models.IntegerField(validators=[
+        MaxValueValidator(5), 
+        MinValueValidator(1)
+    ])
+    elaboration_score = models.IntegerField(validators=[
+        MaxValueValidator(5), 
+        MinValueValidator(1)
+    ])
+    skills_score = models.IntegerField(validators=[
+        MaxValueValidator(5), 
+        MinValueValidator(1)
+    ])
     review = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    @cached_property
+    def average_score(self):
+        return mean([self.behavior_score, self.elaboration_score, self.skills_score])
+    
+    def __str__(self):
+        return f"{self.average_score} - {self.doctor.user.name}"

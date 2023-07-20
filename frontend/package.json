@@ -29,6 +29,7 @@
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.3",
+    "vue-star-rating": "^2.1.0",
     "vue-sweetalert2": "^5.0.5",
     "vuex": "^4.0.0",
     "yup": "^1.2.0"

@@ -12,7 +12,8 @@ from doctors.models import (
     Doctor,
     DoctorOffice,
     AvailabilityDay,
-    AvailabilityTime
+    AvailabilityTime,
+    Review
 )
 
 
@@ -145,22 +146,63 @@ class MakeAppointmentSerializer(serializers.Serializer):
         return super().validate(attrs)
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    doctor_user = serializers.SerializerMethodField(read_only=True)
+    by_user = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Review
+        fields = ["doctor", 
+                  "doctor_user",
+                  "by_user",
+                  "illness",
+                  "treatment_result",
+                  "suggests_doctor",
+                  "behavior_score",
+                  "elaboration_score",
+                  "skills_score",
+                  "review",
+                  "updated_at"]
+        
+    def get_doctor_user(self, obj):
+        return {
+            "first_name": obj.doctor.user.first_name,
+            "last_name": obj.doctor.user.last_name
+        }
+        
+    def get_by_user(self, obj):
+        return {
+            "first_name": obj.by_user.first_name,
+            "last_name": obj.by_user.last_name,
+        }
+        
+    def get_for_user(self, obj):
+        return {
+            "first_name": obj.for_user.first_name,
+            "last_name": obj.for_user.last_name,
+        }
+        
 class DoctorSerializer(ModelSerializer):
     offices = serializers.SerializerMethodField(read_only=True)
     user = CustomUserDetailsSerializer(read_only=True)
     user_id = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=get_user_model().objects.all()
     )
+    rating = serializers.SerializerMethodField(read_only=True)
+    reviews = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Doctor
         fields = [
             "specialty", 
+            "id",
             "offices",
             "get_specialty_display", 
             "upin", 
+            "reviews",
             "user_id", 
             "user", 
+            "rating",
             "bio",
             "verified", 
             "created_at"
@@ -169,6 +211,12 @@ class DoctorSerializer(ModelSerializer):
     def create(self, validated_data):
         validated_data["user"] = validated_data.get("user_id")
         return super().create(validated_data)
+    
+    def get_reviews(self, obj):
+        return ReviewSerializer(obj.doctor_reviews.all(), many=True).data
+    
+    def get_rating(self, obj):
+        return obj.rating
     
     def get_offices(self, obj):
         return DoctorOfficeSerializer(

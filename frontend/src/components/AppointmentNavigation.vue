@@ -54,7 +54,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .swiper {
         height: 450px;
         width: 120px;

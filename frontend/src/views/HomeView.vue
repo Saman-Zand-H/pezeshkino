@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full overflow-hidden">
     <HomeNavbar :isActive="isActive" @toggle-collapse="this.isActive = !this.isActive" />
     <div :class="[isActive ? 'brightness-50' : '', 'w-full transition-all duration-300 h-full relative']">
       <HomeSection />

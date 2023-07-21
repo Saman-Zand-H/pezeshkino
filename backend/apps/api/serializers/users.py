@@ -23,7 +23,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                 "first_name": self.user.first_name,
                 "last_name": self.user.last_name,
                 "city": ShahrSerializer(self.user.city).data,
-                "picture": request.build_absolute_uri(self.user.picture.url) or None,
+                "picture": (request.build_absolute_uri(self.user.picture.url) 
+                            if self.user.picture else None),
                 "gender": self.user.gender
             }
         })

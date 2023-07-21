@@ -1,14 +1,14 @@
 <template>
     <router-link 
-                 class="flex flex-col card rounded border max-w-none border-slate-200 overflow-hidden shadow-lg w-72 h-72 pb-3 gap-5 transition-all duration-300 hover:ring-sky-900/50 hover:scale-105" 
+                 class="flex flex-col card relative rounded-lg border max-w-none border-slate-200 overflow-hidden shadow-lg w-72 h-72 pb-3 gap-5 transition-all duration-300 hover:ring-sky-900/50 hover:scale-105" 
                  :to="{ 'name': 'doctor', 'params': { 'username': username } }" 
                  @mouseover="mouseoverCard" 
                  @mouseout="mouseoutCard"
                 >
-        <div class="z-0">
-            <img :src="picture_link" :alt="['dr.', name, 'picture']" class="w-full h-40 overflow-hidden opacity-85 shadow-lg rounded-t-md self-center">
+        <div class="-z-50 relative">
+            <img :src="picture_link" :alt="['dr.', name, 'picture']" class="w-full aspect-square relative -z-50 overflow-hidden opacity-85 shadow-lg rounded-t-md self-center">
         </div>
-        <div class="flex flex-col bg-white h-20 z-10 scale-[98%] shadow-sm card-body transition-all duration-500">
+        <div class="flex flex-col bg-white z-50 h-40 absolute inset-x-0 w-full -bottom-20 scale-[98%] shadow-sm card-body transition-all duration-500">
             <span class="flex flex-row-reverse items-center justify-center gap-4">
                 <h1 class="text-sky-600 font-semibold text-lg">{{ name }} دکتر</h1>
                 <i v-if="verified" class="fa fa-check bg-sky-500 rounded-full py-[.34rem] px-1.5 text-white"></i>

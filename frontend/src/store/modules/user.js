@@ -53,6 +53,20 @@ export default {
                 throw error
             }
         },
+        logout({ commit }) {
+            localStorage.removeItem("access_token")
+            localStorage.removeItem("refresh_token")
+            localStorage.removeItem("user_info")
+            commit("UPDATE_USER", {
+                username: "",
+                first_name: "",
+                last_name: "",
+                user_type: "",
+                picture: "",
+                city: "",
+                gender: ""
+            })
+        },
         setUser({ commit }, data) {
             commit("UPDATE_USER", data)
             localStorage.setItem("user_info", JSON.stringify(data))

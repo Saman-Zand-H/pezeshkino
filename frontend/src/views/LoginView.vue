@@ -69,7 +69,7 @@
                     await this.login(values)
                     this.fireAlert(
                         "شما با موفقیت وارد شدید! در حال انتقال...",
-                        3,
+                        2,
                         "success"
                     )
                     setTimeout(

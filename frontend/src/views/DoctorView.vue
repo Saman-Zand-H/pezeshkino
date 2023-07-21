@@ -11,11 +11,8 @@
             <aside class="lg:w-1/4 w-full">
                 <div class="rounded-lg shadow-xl bg-white border flex flex-col justify-center items-center py-8">
                     <div class="h-60 w-40 mt-2 bg-white z-10">
-                        <img v-if="doctor.user.picture !== null" :alt="[doctor.user.name, 'picture']" :src="doctor.user.picture"
+                        <img :alt="[doctor.user.name, 'picture']" :src="doctor.user.picture || require('@/assets/blank-user.png')"
                             class="box-content shadow-lg h-44 aspect-video overflow-clip rounded-full border-4 border-slate-200/40 -z-10">
-                        <div v-else class="-z-10 w-44 h-44 rounded-full bg-lime-800 items-center justify-center">
-                            {{ doctor.user.first_name[0] }} {{ doctor.user.last_name[0] }}
-                        </div>
                     </div>
                     <div class="flex flex-col justify-center items-center">
                         <span>

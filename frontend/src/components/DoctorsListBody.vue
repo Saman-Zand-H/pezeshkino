@@ -10,7 +10,7 @@
                         :username="doctor.user.username"
                         :spcialty="doctor.specialty"
                         :specialty_display="doctor.get_specialty_display"
-                        :picture_link="doctor.user.picture"
+                        :picture_link="doctor.user.picture || require('@/assets/blank-user.png/')"
                         :verified="doctor.verified"
                         />
         </main>

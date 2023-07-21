@@ -101,7 +101,7 @@
                 }
                 if (!newState && ttl !== 0) {
                     setTimeout(() => {
-                        const elem = document.getElementById('alertContainer')
+                        const elem = document.querySelector('#alertContainer')
                         elem.classList.add("animate__animated", "animate__fadeOutRight")
                     }, ttl * 100)
                 }

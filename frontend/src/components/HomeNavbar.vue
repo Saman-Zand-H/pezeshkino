@@ -31,6 +31,12 @@
                                         <i class="fa fa-user text-xl"></i>
                                     </router-link>
                                 </li>
+                                <li v-else>
+                                    <button type="button" @click.prevent="logOut" class="navbar-link text-black">
+                                        خروج
+                                        <i class="fa fa-sign-out text-xl"></i>
+                                    </button>
+                                </li>
                             </ul>
                             <ul class="lg:hidden flex flex-row flex-wrap items-baseline">
                                 <li>
@@ -78,6 +84,13 @@
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li>
+                    <li v-if="Authenticated" class="border-t border-b border-white py-2 ps-1 flex">
+                        <button type="button" @click.prevent="logOut">
+                            خروج
+                            <i class="fa fa-sign-out"></i> 
+                        </button>
+                        <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
+                    </li>
                     <li v-else class="border-t border-b border-white py-2 ps-1 flex">
                         <router-link :to="{ name: 'login' }">
                             Login
@@ -104,12 +117,15 @@
         computed: {
             ...mapState(["user"])
         },
-        async created() {
-            this.Authenticated = await AuthManager.isAuthenticated()
-            this.updateUserInfo()
-        },
         props: {
             isActive: Boolean
+        },
+        async beforeMount() {
+            await this.updateUserInfo()
+            this.Authenticated = await AuthManager.isAuthenticated()
+        },
+        async updated() {
+            this.Authenticated = await AuthManager.isAuthenticated()
         },
         mounted() {
             window.addEventListener('scroll', this.navScrolled)
@@ -119,7 +135,7 @@
         },
         emits: ["toggle-collapse"],
         methods: {
-            ...mapActions(["updateUserInfo"]),
+            ...mapActions(["updateUserInfo", "logout"]),
             navScrolled(e) {
                 if (document.body.scrollTop >= 30 || document.documentElement.scrollTop >= 30) {
                     document.querySelector("#homeNavHeader").classList.remove("bg-transparent", "text-black")
@@ -134,6 +150,26 @@
                     document.querySelector("#homeNavHeader").classList.add("bg-transparent", "text-black")
                 }
             },
+            logOut(e) {
+                const swalConf = {
+                    title: 'آیا اطمینان دارید که میخواهید از حساب کاربری خود خارج شوید؟',
+                    showDenyButton: true,
+                    confirmButtonText: 'بله',
+                    denyButtonText: "خیر",
+                    customClass: {
+                        denyButton: "bg-red-500",
+                        confirmButton: "bg-green-500"
+                    }
+                }
+                const swalVal = this.$swal.fire(swalConf)
+                swalVal.then(result => {
+                    if (result.isConfirmed) {
+                        this.logout()
+                        this.Authenticated = false
+                        this.$swal.fire({title: 'با موفقیت خارج شدید', icon: "success"})
+                    }
+                })
+            }
         }
     }
 </script>

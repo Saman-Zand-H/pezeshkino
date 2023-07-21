@@ -46,6 +46,16 @@
                                                     <i class="fa fa-calendar-days px-2"></i>
                                                 </router-link>
                                             </MenuItem>
+                                            <MenuItem v-slot="{ dropdownActive }" class="py-4">
+                                                <button
+                                                    type="button"
+                                                    @click.prevent="logOut"
+                                                    :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'inline-block px-4 py-3 text-sm']"
+                                                    >
+                                                    خروج
+                                                    <i class="fa fa-sign-out px-2"></i>
+                                                </button>
+                                            </MenuItem>
                                         </div>
                                     </MenuItems>
                                 </transition>
@@ -83,7 +93,7 @@
                     </ul>
                     <ul class="md:hidden flex justify-end">
                         <li class="flex">
-                            <button type="button" class="" @click="navCollapsed = !navCollapsed">
+                            <button type="button" class="" @click.prevent="navCollapsed = !navCollapsed">
                                 <i class="fas fa-bars text-xl"></i>
                             </button>
                         </li>
@@ -109,6 +119,12 @@
                             نوبت های من
                             <i class="fa fa-calendar-days mx-2"></i>
                         </router-link>
+                    </li>
+                    <li class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">
+                        <button type="button" @click="logOut" class="w-full">
+                            خروج
+                            <i class="fa fa-sign-out mx-2"></i>
+                        </button>
                     </li>
                 </ul>
             </li>
@@ -149,10 +165,9 @@
 </template>
 
 <script>
-    import api from '@/_helpers/api'
     import AuthManager from '@/_helpers/auth'
     import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
 
     export default {
         name: "DoctorNavbar",
@@ -170,16 +185,40 @@
                 dropdownActive: false
             }
         },
+        methods: {
+            ...mapActions(["logout", "updateUserInfo"]),
+            logOut(e) {
+                const swalConf = {
+                    title: 'آیا اطمینان دارید که میخواهید از حساب کاربری خود خارج شوید؟',
+                    showDenyButton: true,
+                    confirmButtonText: 'بله',
+                    denyButtonText: "خیر",
+                    customClass: {
+                        denyButton: "bg-red-500",
+                        confirmButton: "bg-green-500"
+                    }
+                }
+                const swalVal = this.$swal.fire(swalConf)
+                swalVal.then(result => {
+                    if (result.isConfirmed) {
+                        this.logout()
+                        this.$router.push({name: "home"})
+                        this.Authenticated = false
+                        this.$swal.fire({title: 'با موفقیت خارج شدید', icon: "success"})
+                    }
+                })
+            }
+        },
         computed: {
             ...mapState(['user'])
         },
         async created() {
+            await this.updateUserInfo()
             this.Authenticated = await AuthManager.isAuthenticated()
-            if (this.Authenticated) {
-                try {
-                    this.$store.dispatch("updateUserInfo")
-                } catch {}
-            }
         },
+        async updated() {
+            this.updateUserInfo()
+            this.Authenticated = await AuthManager.isAuthenticated()
+        }
     }
 </script>

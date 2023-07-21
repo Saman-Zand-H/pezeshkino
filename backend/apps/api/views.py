@@ -3,7 +3,6 @@ from datetime import datetime
 from logging import getLogger
 from django.conf import settings
 from rest_framework import status
-from urllib3.util import parse_url
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,11 +21,13 @@ from doctors.models import (AvailabilityTime,
                             Doctor)
 from payments.models import MonetaryTransaction
 from appointments.models import Appointment
+from .serializers.users import CustomRegisterSerializer, CustomTokenObtainPairSerializer
 from .serializers.payments import (TrackIdSerializer, 
                                    TransactionSerializer)
 from .serializers.doctors import (OfficeIdSerializer, 
                                   MakeAppointmentSerializer,
-                                  ReviewSerializer)
+                                  ReviewSerializer,
+                                  RegisterDoctorSerializer)
 from .serializers.appointments import AppointmentSerializer
 
 
@@ -253,3 +254,36 @@ class ReviewView(APIView):
         return Response(ReviewSerializer(reviews, many=True).data,
                         status=status.HTTP_200_OK)
         
+    
+class RegisterDoctorView(APIView):
+    def post(self, request, fromat=None):
+        data = RegisterDoctorSerializer(data=request.data)
+        
+        if not data.is_valid():
+            return Response(data.errors, 
+                            status=status.HTTP_400_BAD_REQUEST)
+        
+        upin = data.validated_data.pop("upin")
+        request.data.pop("upin")
+        specialty = data.validated_data.pop("specialty")
+        request.data.pop("specialty")
+        
+        try:
+            user = data.save(request=request)
+            Doctor.objects.create(user=user,
+                                    specialty=specialty,
+                                    upin=upin)
+            response_data = {}
+            refresh_token_obj = CustomTokenObtainPairSerializer.get_token(user)
+            response_data.update({"refresh_token": str(refresh_token_obj),
+                                    "access_token": str(refresh_token_obj.access_token),
+                                    "user": CustomRegisterSerializer(data.validated_data).data})
+            return Response(
+                response_data, 
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            logger.critical(e)
+            return Response({"message": "something went wrong. please reach us."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            

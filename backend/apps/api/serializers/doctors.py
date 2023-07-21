@@ -6,8 +6,10 @@ from django.contrib.gis.geos import Point
 from rest_framework.serializers import ModelSerializer
 
 from .locations import ShahrSerializer
-from .users import CustomUserDetailsSerializer
+from .users import (CustomUserDetailsSerializer, 
+                    CustomRegisterSerializer)
 from api.utils import get_earliest_available_appointment
+from doctors.enums import Specialties
 from doctors.models import (
     Doctor,
     DoctorOffice,
@@ -221,3 +223,8 @@ class DoctorSerializer(ModelSerializer):
     def get_offices(self, obj):
         return DoctorOfficeSerializer(
             instance=obj.doctor_offices.all(), many=True).data
+
+
+class RegisterDoctorSerializer(CustomRegisterSerializer):
+    upin = serializers.CharField()
+    specialty = serializers.ChoiceField(choices=Specialties.choices)

@@ -13,17 +13,22 @@
                             <ul class="lg:flex flex-row flex-wrap items-baseline space-x-10 hidden">
                                 <li>
                                     <router-link :to="{ name: 'home' }" class="navbar-link text-black">
-                                        Home
+                                        صفحه نخست
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link :to="{ name: 'about' }" class="navbar-link text-black">
-                                        About
+                                        درباره ما
                                     </router-link>
                                 </li>
                                 <li v-if="!Authenticated">
                                     <router-link :to="{ name: 'login' }" class="navbar-link text-black">
-                                        Login
+                                        ورود / ثبت نام
+                                    </router-link>
+                                </li>
+                                <li v-if="!Authenticated">
+                                    <router-link :to="{ name: 'login' }" class="navbar-link text-black">
+                                        ثبت نام برای پزشکان
                                     </router-link>
                                 </li>
                                 <li v-else>
@@ -41,7 +46,7 @@
                             <ul class="lg:hidden flex flex-row flex-wrap items-baseline">
                                 <li>
                                     <button id="navToggleMenuBtn" class="font-semibold hover:underline" type="button" @click="$emit('toggle-collapse')">
-                                        Menu
+                                        <i id="navToggleBurger" class="fa fa-bars text-xl"></i>
                                     </button>
                                 </li>
                             </ul>
@@ -67,13 +72,13 @@
                 <ul class="mt-[8rem] text-xl leading-9 font-semibold flex flex-col px-5 text-left">
                     <li class="border-t border-white py-2 px-1 flex">
                         <router-link to="/">
-                            Home
+                            صفحه نخست
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li>
                     <li class="border-t border-b border-white py-2 ps-1 flex">
                         <router-link :to="{ name: 'about' }">
-                            About
+                            درباره ما
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li>
@@ -93,7 +98,7 @@
                     </li>
                     <li v-else class="border-t border-b border-white py-2 ps-1 flex">
                         <router-link :to="{ name: 'login' }">
-                            Login
+                            ورود / ثبت نام
                         </router-link>
                         <div class="ml-auto"><i class="fas fa-long-arrow-right"></i></div>
                     </li>

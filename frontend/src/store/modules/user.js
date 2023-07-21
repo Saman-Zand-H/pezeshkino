@@ -53,6 +53,15 @@ export default {
                 throw error
             }
         },
+        async signupDoctor({ commit }, credentials) {
+            try {
+                const res = await AuthManager.signupDoctor(credentials)
+                commit("UPDATE_USER", JSON.stringify(localStorage.getItem("user_info")))
+                return res
+            } catch (error) {
+                throw error
+            }
+        },
         logout({ commit }) {
             localStorage.removeItem("access_token")
             localStorage.removeItem("refresh_token")

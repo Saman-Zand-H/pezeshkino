@@ -75,5 +75,8 @@ urlpatterns = [
          name="list_by_transactions"),
     path(route="review/",
          view=views.ReviewView.as_view(),
-         name="review")
+         name="review"),
+    path(route="register/doctor/",
+         view=views.RegisterDoctorView.as_view(),
+         name="register_doctor")
 ] + router.urls

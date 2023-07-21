@@ -2,6 +2,7 @@ import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
 import GeneralProfileView from '../views/GeneralProfileView.vue'
 import PaymentStatusView from '@/views/PaymentStatusView.vue'
+import DoctorsSignupView from '@/views/DoctorsSignupView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import ReviewView from '@/views/ReviewView.vue'
@@ -40,6 +41,11 @@ const routes: RouteRecordRaw[] = [{
                 path: 'signup',
                 name: 'signup',
                 component: SignupView
+            },
+            {
+                path: 'doctor',
+                name: 'doctor_signup',
+                component: DoctorsSignupView
             }
         ]
     },

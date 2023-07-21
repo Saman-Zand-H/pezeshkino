@@ -2,7 +2,7 @@
     <main 
           class="w-full h-screen relative after:bg-contain after:fixed after:w-full after:h-full after:-z-10 after:top-0 after:left-0 after:brightness-50"
          >
-        <HomeNavbar :isActive="isActive" @toggle-collapse="toggleCollapse" />
+        <HomeNavbar :isActive="isActive" @toggle-collapse="this.$data.isActive = !isActive" />
 
         <div :class="[isActive ? 'brightness-50 transition-all duration-300' : '', 'relative']">
             <router-view></router-view>
@@ -32,13 +32,11 @@
             HomeFooter,
         },
         methods: {
-            toggleCollapse() {
-                this.isActive = !this.isActive
-            },
             handleClick(e) {
                 if (
                     !(document.querySelector("#navSidebar").contains(e.target) 
-                    || e.target.id === "navToggleMenuBtn")
+                    || e.target.id === "navToggleMenuBtn"
+                    || e.target.id === "navToggleBurger") && this.isActive
                 ) {
                     this.isActive = !this.isActive
                 }

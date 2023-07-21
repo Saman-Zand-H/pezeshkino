@@ -39,9 +39,18 @@ export default {
                 const res = await AuthManager.login(credentials)
                 commit("UPDATE_USER", JSON.parse(localStorage.getItem("user_info")))
                 return res
-            } catch {
+            } catch (error) {
                 commit("UPDATE_USER")
-                return Promise.reject()
+                throw error
+            }
+        },
+        async signup({ commit }, credentials) {
+            try {
+                const res = await AuthManager.signup(credentials)
+                commit("UPDATE_USER", JSON.stringify(localStorage.getItem("user_info")))
+                return res
+            } catch (error) {
+                throw error
             }
         },
         setUser({ commit }, data) {

@@ -7,16 +7,45 @@ class AuthManager {
         localStorage.removeItem("access_token")
         localStorage.removeItem("refresh_token")
 
-        try {
-            const res = await axios.post("/api/token/", credentials)
-
+        const res = await axios.post(
+            "/api/token/",
+            credentials, {
+                headers: {
+                    'Accept-Language': 'fa-ir'
+                }
+            }
+        )
+        if (res.status === 200) {
             localStorage.setItem("access_token", res.data.access)
             localStorage.setItem("refresh_token", res.data.refresh)
             localStorage.setItem("user_info", JSON.stringify(res.data.user))
             return Promise.resolve(res)
-        } catch {
-            return Promise.reject()
         }
+        return Promise.reject(res)
+    }
+
+    async signup(credentials) {
+        localStorage.removeItem("user_info")
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+
+        const res = await axios.post(
+            "/dj-rest-auth/registration/",
+            credentials, {
+                headers: {
+                    'Accept-Language': 'fa-ir'
+                }
+            }
+        )
+
+        if (res.status !== 201) {
+            return Promise.reject(res)
+        }
+
+        localStorage.setItem("access_token", res.data.access_token)
+        localStorage.setItem("refresh_token", res.data.refresh_token)
+        localStorage.setItem("user_info", JSON.stringify(res.data.user))
+        return Promise.resolve(res)
     }
 
     async isAuthenticated() {

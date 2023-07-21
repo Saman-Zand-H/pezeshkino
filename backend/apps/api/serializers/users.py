@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from collections import deque
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -55,10 +56,11 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         read_only_fields = ["pk", "email", "user_type"]
     
     def validate(self, attrs):
-        data = super().validate(attrs)
-        if (city_id:=data.get("city_id")) and City.objects.filter(id=city_id).exists():
-            data["city"] = City.objects.get(id=city_id)
-            return data
+        if (city_id:=attrs.get("city_id")) and City.objects.filter(id=city_id).exists():
+            attrs["city"] = City.objects.get(id=city_id)
+            return attrs
+        elif not bool(city_id):
+            return attrs
         raise serializers.ValidationError("invalid city_id.", "invalid_city")
     
     def validate_username(self, username):
@@ -78,21 +80,24 @@ class CustomRegisterSerializer(RegisterSerializer):
     gender = serializers.ChoiceField(choices=UserGender.choices, required=False)
     
     def get_cleaned_data(self):
-        return super().get_cleaned_data() | {
-            "first_name": self.validated_data.get("first_name", ""),
-            "last_name": self.validated_data.get("last_name", ""),
-            "picture": self.validated_data.get("picture", ""),
-            "user_type": self.validated_data.get("user_type", ""),
-            "city": self.validated_data.get("city", ""),
-            "gender": self.validated_data.get("gender", "")
+        data = {
+            "first_name": self.validated_data.get("first_name"),
+            "last_name": self.validated_data.get("last_name"),
+            "user_type": self.validated_data.get("user_type"),
         }
+        optional_fields = ["city", "gender", "picture"]
+        for field_name in optional_fields:
+            if self.validated_data.get(field_name) is not None:
+                data[field_name] = self.validated_data.get(field_name)
+        return super().get_cleaned_data() | data
     
     def custom_signup(self, request, user):
+        optional_fields = ["city", "gender", "picture"]
         self.cleaned_data = self.get_cleaned_data()
+        for field_name in optional_fields:
+            if self.cleaned_data.get(field_name) is not None:
+                setattr(user, field_name, self.cleaned_data.get(field_name))
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
-        user.picture = self.cleaned_data["picture"]
         user.user_type = self.cleaned_data["user_type"]
-        user.gender = self.cleaned_data["gender"]
-        user.city = self.cleaned_data["city"]
         return user

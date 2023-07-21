@@ -22,8 +22,9 @@
                         id="picture_image"
                         :src="picture.url"
                     >
-                    <div v-else class="w-44 h-44 bg-lime-900/80 rounded-full z-10 hover:-z-20 overflow-hidden text-white">
-                        <span v-if="user.first_name && user.last_name" class="flex justify-center items-center text-3xl">
+                    <!-- todo: solve the problem with previewing when no picture exists. -->
+                    <div v-else class="w-44 h-44 bg-lime-900/80 rounded-full z-10 hover:-z-20 overflow-hidden flex justify-center items-center text-white">
+                        <span v-if="user.first_name && user.last_name" class="text-3xl">
                             {{ user.first_name[0] }} {{ user.last_name[0] }}
                         </span>
                     </div>
@@ -158,7 +159,7 @@
                     first_name: user.first_name,
                     last_name: user.last_name,
                     gender: user.gender || "justStupid",
-                    city_id: user.city ? user.city.id : null,
+                    city_id: user.city ? user.city.id : NaN,
                     username: user.username,
                     picture: null
                 },
@@ -192,20 +193,18 @@
             async onSubmit() {
                 try {
                     if (!this.picture.file) {
-                        console.log("it is null")
                         this.formData.picture = null
                     } else {
                         this.formData.picture = this.picture.file
-                        console.log(this.formData.picture)
                     }
                     const formData = new FormData()
 
                     formData.append("first_name", this.formData.first_name)
                     formData.append("last_name", this.formData.last_name)
                     formData.append("username", this.formData.username)
-                    formData.append("city_id", this.formData.city_id)
+                    if (this.formData.city) formData.append("city_id", this.formData.city_id)
+                    if (this.formData.picture) formData.append("picture", this.formData.picture)
                     formData.append("gender", this.formData.gender)
-                    formData.append("picture", this.formData.picture)
                     
                     const res = await api.patch("/dj-rest-auth/user/", formData, {
                         headers: {

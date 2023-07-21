@@ -7,10 +7,11 @@ import type { RouteRecordRaw } from 'vue-router'
 import ReviewView from '@/views/ReviewView.vue'
 import DoctorsListView from '../views/DoctorsListView.vue'
 import DoctorView from '../views/DoctorView.vue'
+import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
+import AuthView from '../views/AuthView.vue'
 import HomeView from '../views/HomeView.vue'
 import AuthManager from '@/_helpers/auth'
-// import SignupView from '../views/SignupView.vue'
 
 const routes: RouteRecordRaw[] = [{
         path: '/',
@@ -27,9 +28,20 @@ const routes: RouteRecordRaw[] = [{
             import ( /* webpackChunkName: "about" */ '../views/AboutView.vue')
     },
     {
-        path: '/login',
-        name: 'login',
-        component: LoginView
+        path: '/authentication',
+        name: 'auth',
+        component: AuthView,
+        children: [
+            {
+                path: 'login',
+                name: 'login',
+                component: LoginView
+            }, {
+                path: 'signup',
+                name: 'signup',
+                component: SignupView
+            }
+        ]
     },
     {
         path: '/doctors/',
@@ -78,6 +90,11 @@ router.beforeEach(async(to, from) => {
     if (['user', 'profile_edit', 'profile_appointments'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
         if (!is_authenticated) return { name: "login" }
+    } else if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
+        const is_authenticated = await AuthManager.isAuthenticated()
+        if (is_authenticated) {
+            return { name: 'home' }
+        }
     }
 })
 

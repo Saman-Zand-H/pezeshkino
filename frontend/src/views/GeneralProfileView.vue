@@ -11,7 +11,7 @@
                         <div class="">
                             <img v-if="user.picture" :src="user.picture" class="w-[4.5rem] h-[4.5rem] overflow-hidden shadow-md rounded-full" alt="profile picture">
                             <div v-else class="text-xs rounded-full flex items-center justify-center bg-lime-900/80 text-white w-[4.5rem] h-[4.5rem]">
-                                <span v-if="user.first_name && user.last_name">{{ user.first_name[0] }} {{ user.last_name[0] }}</span>
+                                <span class="text-xl" v-if="user.first_name && user.last_name">{{ user.first_name[0] }} {{ user.last_name[0] }}</span>
                             </div>
                         </div>
                         <router-link :to="{ name: 'profile_edit' }" class="flex flex-col gap-1.5">

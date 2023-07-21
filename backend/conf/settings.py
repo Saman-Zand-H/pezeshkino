@@ -14,6 +14,7 @@ import sys, os
 from datetime import timedelta
 from environs import Env
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 
 env = Env()
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -141,11 +143,22 @@ AUTH_USER_MODEL = "users.UserModel"
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("fa", _("Farsi"))
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "locale/")
+]
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+USER_I10N = True
 
 USE_TZ = True
 
@@ -199,3 +212,4 @@ CORS_ALLOWED_ORIGINS = [
 
 # Allauth Configuration
 ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_ADAPTER = "users.adapters.CustomAccountAdapter"

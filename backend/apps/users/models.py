@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import (AbstractBaseUser, 
                                         BaseUserManager, 
                                         PermissionsMixin)
+from django.utils.translation import gettext_lazy as _
 from iranian_cities.models import City
 
 from .enums import UserType, UserGender
@@ -100,9 +101,16 @@ class UsersManager(BaseUserManager):
 
 
 class UserModel(AbstractBaseUser, PermissionsMixin):    
-    username = models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=100, 
+                                unique=True,
+                                error_messages={
+                                    "unique": _("This username is already taken.")
+                                    }
+                                )
     email = models.EmailField(unique=True, null=True, blank=True)
-    gender = models.CharField(choices=UserGender.choices, max_length=10, default="justStupid")
+    gender = models.CharField(choices=UserGender.choices, 
+                              max_length=10, 
+                              default="justStupid")
     city = models.ForeignKey(City,
                              on_delete=models.SET_NULL,
                              null=True,
@@ -132,3 +140,8 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     @property
     def name(self):
         return f"{self.first_name.title()} {self.last_name.title()}"
+    
+    def save(self, *args, **kwargs):
+        if not bool(self.email):
+            self.email = None
+        super().save(*args, **kwargs)

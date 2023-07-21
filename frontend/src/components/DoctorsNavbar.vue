@@ -7,99 +7,97 @@
                 </div>
             </div>
 
-            <div class="flex">
-                <nav>
-                    <ul class="md:flex hidden lg:gap-20 gap-12 mx-5 flex-row-reverse flex-wrap items-center ms-20">
-                        <li v-if="Authenticated" class="relative">
-                            <Menu as="div" class="relative inline-block text-right">
-                                <div>
-                                    <MenuButton class="inline-flex w-full justify-center gap-x-1.5 rounded-lg bg-white px-3 py-2">
-                                        <i class="fa fa-user text-lg"></i>
-                                    </MenuButton>
-                                </div>
+            <nav>
+                <ul class="md:flex hidden lg:gap-20 gap-12 mx-5 flex-row-reverse flex-wrap items-center ms-20">
+                    <li v-if="Authenticated" class="relative">
+                        <Menu as="div" class="relative inline-block text-right">
+                            <div>
+                                <MenuButton class="inline-flex w-full justify-center gap-x-1.5 rounded-lg bg-white px-3 py-2">
+                                    <i class="fa fa-user text-lg"></i>
+                                </MenuButton>
+                            </div>
 
-                                <transition 
-                                    enter-active-class="transition duration-200" 
-                                    enter-form-class="transform opacity-0 scale-95" 
-                                    enter-to-class="transform opacity-100 scale-100" 
-                                    leave-active-class="transition ease-in duration-75" 
-                                    leave-from-class="transform opacity-100 scale-100" 
-                                    leave-to-class="transform opacity-0 scale-95"
-                                    >
-                                    <MenuItems class="absolute right-0 z-50 mt-2 w-60 origin-top-right rounded-md bg-white shadow-sm ring-1 ring-slate-400">
-                                        <div class="py-3 text-center">
-                                            <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <router-link
-                                                    :to="{ name: 'profile_edit' }"
-                                                    :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
-                                                    >
-                                                    تغییر مشخصات
-                                                    <i class="fas fa-pencil px-2"></i>
-                                                </router-link>
-                                            </MenuItem>
-                                            <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <router-link
-                                                    :to="{ name: 'profile_appointments' }"
-                                                    :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
-                                                    >
-                                                    نوبت های من
-                                                    <i class="fa fa-calendar-days px-2"></i>
-                                                </router-link>
-                                            </MenuItem>
-                                            <MenuItem v-slot="{ dropdownActive }" class="py-4">
-                                                <button
-                                                    type="button"
-                                                    @click.prevent="logOut"
-                                                    :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'inline-block px-4 py-3 text-sm']"
-                                                    >
-                                                    خروج
-                                                    <i class="fa fa-sign-out px-2"></i>
-                                                </button>
-                                            </MenuItem>
-                                        </div>
-                                    </MenuItems>
-                                </transition>
-                            </Menu>
-                        </li>
-                        <li v-else>
-                            <router-link :to="{ name: 'login' }" class="border py-2 px-4 rounded-2xl hover:border-gray-400 transition-colors duration-200 ease-in">
-                                ورود / ثبت نام
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link 
-                                :to="{ name: 'home' }" 
-                                class="navbar-link text-black hover:text-black/80"
-                            >
-                                صفحه نخست
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link 
-                                :to="{ name: 'about' }" 
-                                class="navbar-link text-black hover:text-black/80"
-                            >
-                                درباره ما
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link 
-                                :to="{ name: 'doctors' }" 
-                                class="navbar-link text-black hover:text-black/80"
-                            >
-                                پزشکان
-                            </router-link>
-                        </li>
-                    </ul>
-                    <ul class="md:hidden flex justify-end">
-                        <li class="flex">
-                            <button type="button" class="" @click.prevent="navCollapsed = !navCollapsed">
-                                <i class="fas fa-bars text-xl"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                            <transition 
+                                enter-active-class="transition duration-200" 
+                                enter-form-class="transform opacity-0 scale-95" 
+                                enter-to-class="transform opacity-100 scale-100" 
+                                leave-active-class="transition ease-in duration-75" 
+                                leave-from-class="transform opacity-100 scale-100" 
+                                leave-to-class="transform opacity-0 scale-95"
+                                >
+                                <MenuItems class="absolute right-0 z-50 mt-2 w-60 origin-top-right rounded-md bg-white shadow-sm ring-1 ring-slate-400">
+                                    <div class="py-3 text-center">
+                                        <MenuItem v-slot="{ dropdownActive }" class="py-4">
+                                            <router-link
+                                                :to="{ name: 'profile_edit' }"
+                                                :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
+                                                >
+                                                تغییر مشخصات
+                                                <i class="fas fa-pencil px-2"></i>
+                                            </router-link>
+                                        </MenuItem>
+                                        <MenuItem v-slot="{ dropdownActive }" class="py-4">
+                                            <router-link
+                                                :to="{ name: 'profile_appointments' }"
+                                                :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
+                                                >
+                                                نوبت های من
+                                                <i class="fa fa-calendar-days px-2"></i>
+                                            </router-link>
+                                        </MenuItem>
+                                        <MenuItem v-slot="{ dropdownActive }" class="py-4">
+                                            <button
+                                                type="button"
+                                                @click.prevent="logOut"
+                                                :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'inline-block px-4 py-3 text-sm']"
+                                                >
+                                                خروج
+                                                <i class="fa fa-sign-out px-2"></i>
+                                            </button>
+                                        </MenuItem>
+                                    </div>
+                                </MenuItems>
+                            </transition>
+                        </Menu>
+                    </li>
+                    <li v-else>
+                        <router-link :to="{ name: 'login' }" class="border py-2 px-4 rounded-2xl hover:border-gray-400 transition-colors duration-200 ease-in">
+                            ورود / ثبت نام
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link 
+                            :to="{ name: 'home' }" 
+                            class="navbar-link text-black hover:text-black/80"
+                        >
+                            صفحه نخست
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link 
+                            :to="{ name: 'about' }" 
+                            class="navbar-link text-black hover:text-black/80"
+                        >
+                            درباره ما
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link 
+                            :to="{ name: 'doctors' }" 
+                            class="navbar-link text-black hover:text-black/80"
+                        >
+                            پزشکان
+                        </router-link>
+                    </li>
+                </ul>
+                <ul class="md:hidden flex justify-end">
+                    <li class="flex">
+                        <button type="button" class="" @click.prevent="navCollapsed = !navCollapsed">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <ul :class="[navCollapsed ? 'h-0 overflow-hidden' : 'w-full px-12 py-10', 'bg-white transition-all duration-300 ease-out flex md:hidden flex-col']">
             <li v-if="Authenticated" class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-200 ease-in py-8">

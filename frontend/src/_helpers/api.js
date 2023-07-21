@@ -49,7 +49,6 @@ const responseInterceptor = api.interceptors.response.use(
             error.response.config.headers["Authorization"] = `Bearer ${access}`
             return api.request(error.response.config)
         } catch (error) {
-            console.error(error)
             error.config.retry = false
             return Promise.reject(error)
         }

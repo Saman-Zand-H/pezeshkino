@@ -1,5 +1,5 @@
 <template>
-    <header id="homeNavHeader" class="fixed w-full bg-transparent z-[100] top-0 left-0 right-0 transition-all duration-300 text-black">
+    <header id="homeNavHeader" class="fixed w-full bg-transparent z-[100] top-0 inset-x-0 transition-all duration-300 text-black">
         <div class="container">
             <div class="items-center">
                 <div class="relative flex align-baseline items-center justify-between ms-12">

@@ -113,7 +113,7 @@
                     await this.signupDoctor(values)
                     this.fireAlert(
                         "شما با موفقیت ثبت‌نام شدید! در حال انتقال...",
-                        3,
+                        1.5,
                         "success"
                     )
                     setTimeout(
@@ -121,7 +121,6 @@
                         (Number(this.alert.alertTTL) + .5) * 1000
                     )
                 } catch (error) {
-                    console.log(error)
                     actions.setErrors(error.response.data)
                     this.$swal.fire({
                         title: '!ثبت‌نام ناموفق',

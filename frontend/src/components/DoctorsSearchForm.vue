@@ -1,10 +1,10 @@
 <template>
     <div class="text-right flex flex-col gap-4 my-3">
-        <span class="w-full text-right text-xl underline underline-offset-[1.4rem]">
+        <button @click.prevent="this.isVisible = !this.isVisible" class="w-full md:cursor-default text-right text-xl underline underline-offset-[1.4rem]">
             فیلتر ها
-        </span>
+        </button>
         <div class="w-full border-b border-cyan-950/50 me-3"></div>
-        <fieldset>
+        <fieldset :class="[isVisible ? 'w-full max-h-[50rem] md:h-fit' : 'max-h-0 md:max-h-fit', 'duration-700 overflow-hidden transition-all']">
             <div class="mt-5 text-gray-600">
                 <div class="relative select-container my-3">
                     <label for="provinceInput" class="text-sm">انتخاب استان</label>
@@ -104,7 +104,8 @@
                 province: "",
                 city: "",
                 specialty: "",
-                searchTerm: ""
+                searchTerm: "",
+                isVisible: true
             }
         },
         computed: {

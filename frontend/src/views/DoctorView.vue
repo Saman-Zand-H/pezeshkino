@@ -48,7 +48,7 @@
                 <div class="rounded-lg shadow-xl bg-white border flex flex-col justify-center relative w-full items-center py-8 px-10">
                     <div v-if="tab_page === 'office_info'" class="w-full">
                         <OfficeAppointmentSection 
-                            :doctor="doctor" 
+                            :doctor="doctor"
                             :appointment_time="appointment_time" 
                             @appointmentChange="newVal => this.appointment_time=newVal" />
                     </div>
@@ -76,7 +76,9 @@
                                         </div>
                                         <div class="flex flex-col text-sm">
                                             <div class="">
-                                                <span class="rounded-2xl inline-flex items-center justify-center bg-slate-300/60 px-2.5 py-1 text-center text-xs text-slate-500">ویزیت</span>
+                                                <span v-if="review.by_user.visited" class="rounded-2xl inline-flex items-center justify-center bg-slate-300/60 px-2.5 py-1 text-center text-xs text-slate-500">
+                                                    ویزیت شده
+                                                </span>
                                                 {{ review.by_user.first_name }}
                                             </div>
                                             <div class="">

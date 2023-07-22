@@ -1,3 +1,5 @@
+from statistics import mean
+from django.db.models import Q
 from rest_framework import serializers
 from django.db.models.aggregates import Max, Min
 from iranian_cities.models import City
@@ -9,6 +11,7 @@ from .locations import ShahrSerializer
 from .users import (CustomUserDetailsSerializer, 
                     CustomRegisterSerializer)
 from api.utils import get_earliest_available_appointment
+from appointments.models import Appointment
 from doctors.enums import Specialties
 from doctors.models import (
     Doctor,
@@ -151,6 +154,7 @@ class MakeAppointmentSerializer(serializers.Serializer):
 class ReviewSerializer(serializers.ModelSerializer):
     doctor_user = serializers.SerializerMethodField(read_only=True)
     by_user = serializers.SerializerMethodField(read_only=True)
+    average_score = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Review
@@ -158,6 +162,7 @@ class ReviewSerializer(serializers.ModelSerializer):
                   "doctor_user",
                   "by_user",
                   "illness",
+                  "average_score",
                   "treatment_result",
                   "suggests_doctor",
                   "behavior_score",
@@ -173,9 +178,18 @@ class ReviewSerializer(serializers.ModelSerializer):
         }
         
     def get_by_user(self, obj):
+        visited = (
+            Appointment
+            .objects
+            .filter(Q(office__doctor=obj.doctor) 
+                    & Q(patient=obj.by_user))
+            .exists()
+        )
         return {
             "first_name": obj.by_user.first_name,
             "last_name": obj.by_user.last_name,
+            "username": obj.by_user.username,
+            "visited": visited
         }
         
     def get_for_user(self, obj):
@@ -183,6 +197,10 @@ class ReviewSerializer(serializers.ModelSerializer):
             "first_name": obj.for_user.first_name,
             "last_name": obj.for_user.last_name,
         }
+    
+    def get_average_score(self, obj):
+        return mean([obj.behavior_score, obj.elaboration_score, obj.skills_score])
+    
         
 class DoctorSerializer(ModelSerializer):
     offices = serializers.SerializerMethodField(read_only=True)

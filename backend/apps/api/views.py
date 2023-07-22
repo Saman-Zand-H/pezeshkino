@@ -3,6 +3,7 @@ from datetime import datetime
 from logging import getLogger
 from django.conf import settings
 from rest_framework import status
+from django.utils import timezone
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,7 +22,8 @@ from doctors.models import (AvailabilityTime,
                             Doctor)
 from payments.models import MonetaryTransaction
 from appointments.models import Appointment
-from .serializers.users import CustomRegisterSerializer, CustomTokenObtainPairSerializer
+from .serializers.users import (CustomRegisterSerializer, 
+                                CustomTokenObtainPairSerializer)
 from .serializers.payments import (TrackIdSerializer, 
                                    TransactionSerializer)
 from .serializers.doctors import (OfficeIdSerializer, 
@@ -29,6 +31,9 @@ from .serializers.doctors import (OfficeIdSerializer,
                                   ReviewSerializer,
                                   RegisterDoctorSerializer)
 from .serializers.appointments import AppointmentSerializer
+from doctors.queries import (get_revenues_for_last_week,
+                             get_number_of_appointments_for_day, 
+                             get_total_number_of_patients)
 
 
 logger = getLogger(__name__)
@@ -113,7 +118,7 @@ class InitiateAppointmentView(APIView):
                 zibal_request_url = "https://gateway.zibal.ir/v1/request/"
                 zibal_data = {
                     "merchant": getattr(settings, "ZIBAL_MERCHANT", "zibal"),
-                    "amount": Currencies.toman_to_rial(office.doctor.visit_cost),
+                    "amount": Currencies.toman_to_rial(office.consultation_fee),
                     "orderId": appointment.uuid.hex,
                     "callbackUrl": "http://localhost:8080/payment_status"
                 }
@@ -133,7 +138,7 @@ class InitiateAppointmentView(APIView):
         trackId = bank_response.json().get("trackId")
         MonetaryTransaction.objects.create(by_user=request.user,
                                            for_user=office.doctor.user,
-                                           amount=office.doctor.visit_cost,
+                                           amount=office.consultation_fee,
                                            currency=Currencies.IRT,
                                            trackId=trackId,
                                            status=PaymentStatus.Pending)
@@ -287,3 +292,23 @@ class RegisterDoctorView(APIView):
             return Response({"message": "something went wrong. please reach us."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
+            
+class DashboardHomeDataView(APIView):
+    permission_classes = [IsDoctor]
+    
+    def get(self, request, format=None):
+        doctor = request.user.user_doctor
+        doctor_id = doctor.id
+        timestamp = timezone.now()
+        data = {
+            "number_of_patients": get_total_number_of_patients(
+                doctor_id),
+            "revenue_for_week": get_revenues_for_last_week(
+                doctor_id, timestamp),
+            "number_of_appointments": get_number_of_appointments_for_day(
+                doctor_id, timestamp),
+            "number_of_offices": doctor.doctor_offices.count(),
+            "comments": ReviewSerializer(doctor.doctor_reviews.all()[:5], many=True).data
+        }
+        data["weekly_income"] = sum(i["income"] for i in data["revenue_for_week"])
+        return Response(data, status=status.HTTP_200_OK)

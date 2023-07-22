@@ -38,6 +38,7 @@
                             <Suspense>
                                 <AppointmentNavigation 
                                     :appointment_time=appointment_time
+                                    :office_id="office.id"
                                     />
                             </Suspense>
                             <button 
@@ -61,7 +62,7 @@
                         :value="[[office.earliest_appointment.date, 'T', office.earliest_appointment.time].join(''), Number(office.id)]"
                         @input="$emit('appointmentChange', $event.target.value.split(','))"
                         :id="['earliest_btn_', office.id].join('')"
-                        :checked="appointment_time === $el.value"
+                        :checked="appointment_time === $el?.value"
                         >
                 <label :for="['earliest_btn_', office.id].join('')" class="text-right justify-center px-5 py-4 w-full items-center rounded-lg transition-colors duration-200 border hover:cursor-pointer focus:border-sky-800 hover:border-sky-800/60 shadow-md gap-6">
                     <div class="flex flex-col gap-2">
@@ -69,9 +70,9 @@
                             :نزدیک ترین نوبت خالی
                         </span>
                         <span class="text-sm px-3" v-if="!isEmpty(office.earliest_appointment)">
-                            {{ moment(office.earliest_appointment.date).format('dddd jD jMMMM') }} - 
+                            {{ jmoment(office.earliest_appointment.date).format('dddd jD jMMMM') }} - 
                             ساعت
-                            {{ moment(office.earliest_appointment.time, "HH:mm:ss").format('HH:mm') }}
+                            {{ jmoment(office.earliest_appointment.time, "HH:mm:ss").format('HH:mm') }}
                         </span>
                         <span class="" v-else>
                             این مطب دارای زمان خالی نمیباشد
@@ -107,7 +108,8 @@
 <script>
     import api from '@/_helpers/api'
     import fa from 'moment/locale/fa'
-    import moment from 'moment-jalaali'
+    import jmoment from 'moment-jalaali'
+    import moment from 'moment'
     import original_moment from 'moment'
     import isEmpty from 'lodash/isEmpty'
     import AlertMessage from './AlertMessage.vue'
@@ -152,12 +154,14 @@
                         datetime: this.$props.appointment_time[0]
                     }
                     const res = await api.post("/api/initiate_appointment/", data)
-                    this.fireAlert(
-                        'قرار ملاقات با موفقیت تنظیم شد. در حال انتقال به صفحه پرداخت...', 
-                        3, 
-                        'success'
-                    )
-                    window.location.assign(res.data.payLink)
+                    if (res.status === 200) {
+                        this.fireAlert(
+                            'قرار ملاقات با موفقیت تنظیم شد. در حال انتقال به صفحه پرداخت...', 
+                            3, 
+                            'success'
+                        )
+                        window.location.assign(res.data.payLink)
+                    }
                 } catch {
                     this.fireAlert(
                         'پرداخت با خطا مواجه شد. لطفا مجددا تلاش کنید.', 
@@ -168,7 +172,7 @@
             },
             dataIsValid() {
                 const values = this.$props.appointment_time
-                const dateValid = original_moment(values[0], moment.ISO_8601, true).isValid()
+                const dateValid = moment(values[0], moment.ISO_8601, true).isValid()
                 return dateValid && !isNaN(values[1])
             },
             fireAlert(msg, ttl = 3, type = "danger") {
@@ -185,10 +189,10 @@
             },
         },
         setup() {
-            moment.locale("fa", fa)
-            moment.loadPersian({ dialect: 'persian-modern' })
+            moment.updateLocale("fa", fa)
+            jmoment.loadPersian({ dialect: 'persian-modern' })
             return {
-                moment,
+                jmoment,
                 isEmpty
             }
         },

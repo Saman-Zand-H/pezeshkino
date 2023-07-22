@@ -1,7 +1,8 @@
-import GeneralDashboardView from '@/views/GeneralDashboardView.vue'
 import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
+import GeneralDashboardView from '@/views/GeneralDashboardView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
 import GeneralProfileView from '../views/GeneralProfileView.vue'
+import HomeDashboardView from '@/views/HomeDashboardView.vue'
 import PaymentStatusView from '@/views/PaymentStatusView.vue'
 import DoctorsSignupView from '@/views/DoctorsSignupView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -91,7 +92,11 @@ const routes: RouteRecordRaw[] = [{
         name: 'doctor_dashboard',
         component: GeneralDashboardView,
         children: [
-            
+            {
+                path: 'home',
+                name: 'doctor_dashboard_home',
+                component: HomeDashboardView
+            }
         ]
     }
 ]
@@ -102,7 +107,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, from) => {
-    if (['user', 'profile_edit', 'profile_appointments'].indexOf(String(to.name)) !== -1) {
+    if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home"].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
         if (!is_authenticated) return { name: "login" }
     } else if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {

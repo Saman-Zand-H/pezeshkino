@@ -1,7 +1,7 @@
 <template>
     <nav class="bg-white z-20 w-full h-16 fixed flex justify-between">
         <ul class="px-2 flex items-center gap-7">
-            <button>
+            <button type="button" @click="$emit('toggle-sidebar')">
                 <i class="fa fa-bars text-xl text-slate-700"></i>
             </button>
             <li class="flex gap-2">
@@ -33,12 +33,15 @@
 </template>
 
 <script>
+    import { provide } from 'vue'
+
     export default {
         name: 'DashboardNavbar',
         data() {
             return {
                 user: {}
             }
-        }
+        },
+        emits: ["toggle-sidebar"]
     }
 </script>

@@ -85,7 +85,7 @@
             appointmentChange: Array
         },
         props: {
-            office_id: {type: Number, default: 6},
+            office_id: Number,
             appointment_time: Array
         },
         data() {

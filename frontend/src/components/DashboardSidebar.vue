@@ -1,7 +1,7 @@
 <template>
-    <aside class="w-1/5 bg-white shadow-lg px-5 inset-y-0 left-0 py-24 fixed block h-full">
+    <aside :class="[sidebarActive ? 'md:w-1/5 w-full px-5' : 'lg:w-[8%] w-0 items-center' ,'bg-white transition-all duration-150 shadow-lg inset-y-0 left-0 py-24 fixed flex flex-col h-full overflow-hidden']">
         <ul>
-            <li class="rounded-xl hover:cursor-pointer flex hover:bg-slate-200 py-2 px-4">
+            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
                     <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -22,6 +22,7 @@
                         </g>
                     </svg>
                 </span>
+                <span v-if="sidebarActive" class="text-sm text-slate-600">Home</span>
             </li>
 
             <li class="rounded-xl hover:cursor-pointer flex hover:bg-slate-200 py-2 px-4">
@@ -143,7 +144,11 @@
 </template>
 
 <script>
-export default {
-    name: 'DashbaordSidebar'
-}
+    import { inject } from 'vue'
+    export default {
+        name: 'DashbaordSidebar',
+        props: {
+            sidebarActive: Boolean
+        }
+    }
 </script>

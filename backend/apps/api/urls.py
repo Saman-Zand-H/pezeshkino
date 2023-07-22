@@ -78,5 +78,8 @@ urlpatterns = [
          name="review"),
     path(route="register/doctor/",
          view=views.RegisterDoctorView.as_view(),
-         name="register_doctor")
+         name="register_doctor"),
+    path(route="dashboard/home/",
+         view=views.DashboardHomeDataView.as_view(),
+         name="home_dashboard_data")
 ] + router.urls

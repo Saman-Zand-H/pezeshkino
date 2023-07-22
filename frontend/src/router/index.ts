@@ -1,3 +1,4 @@
+import GeneralDashboardView from '@/views/GeneralDashboardView.vue'
 import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
 import GeneralProfileView from '../views/GeneralProfileView.vue'
@@ -84,6 +85,14 @@ const routes: RouteRecordRaw[] = [{
         path: '/payment_status',
         name: 'payment_status',
         component: PaymentStatusView,
+    },
+    {
+        path: '/dashboard',
+        name: 'doctor_dashboard',
+        component: GeneralDashboardView,
+        children: [
+            
+        ]
     }
 ]
 

@@ -146,6 +146,7 @@ class InitiateAppointmentView(APIView):
             status=PaymentStatus.Pending
         )
         appointment.transaction = monetary_transaction
+        appointment.save()
         
         return Response({"message": "appointment was created successfully.",
                          "payLink": f"https://gateway.zibal.ir/start/{trackId}/"},

@@ -55,15 +55,15 @@
         },
         async setup(props, ctx) {
             let appointments = []
-            jmoment.locale("fa", fa)
-            jmoment.loadPersian()
+            jmoment.updateLocale("fa", fa)
+            jmoment.loadPersian({dialect: 'persian-modern'})
             switch (props.appointmentType) {
                 case 'patient':
                     try {
                         const res = await api.get("/api/patient/get_appointments/")
                         appointments = res.data
                     } catch {}
-                // todo: handle reject
+                // todo: handle reject and doctor appointment
                 case 'doctor':
                     try {
                         const res = await api.get("/api/patient/get_appointments/")

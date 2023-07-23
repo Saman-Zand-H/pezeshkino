@@ -13,5 +13,6 @@ class IsDoctor(IsAuthenticated):
     def has_permission(self, request, view):
         return (
             super().has_permission(request, view) 
+            and hasattr(request.user, "user_type")
             and request.user.user_type == "D"
         )

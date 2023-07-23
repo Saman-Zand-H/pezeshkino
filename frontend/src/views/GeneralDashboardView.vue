@@ -3,7 +3,7 @@
         <DashboardNavbar @toggle-sidebar="this.sidebarActive = !sidebarActive" />
         <div class="w-full relative flex h-fit px-4 justify-between items-start">
             <DashboardSidebar :sidebarActive="sidebarActive" />
-            <main :class="[sidebarActive ? 'ms-[21%]' : 'lg:ms-[9%]', 'mt-20 transition-all duration-200']">
+            <main :class="[sidebarActive ? 'ms-[21%]' : 'lg:ms-[9%]', 'mt-20 w-full transition-all duration-200']">
                 <router-view></router-view>
                 <DashboardFooter />
             </main>

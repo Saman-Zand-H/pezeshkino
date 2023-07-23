@@ -96,8 +96,8 @@
         async setup(props, context) {
             let available_times = {}
 
-            moment.locale("fa", fa)
-            moment.loadPersian()
+            moment.updateLocale("fa", fa)
+            moment.loadPersian({dialect: 'persian-modern'})
 
             try {
                 const res = await axios.post("/api/get_free_times/", {office_id: props.office_id})

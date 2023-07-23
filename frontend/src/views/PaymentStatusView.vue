@@ -19,7 +19,7 @@
                 <div class="w-fit h-fit mx-auto mt-6">
                     <i class="fa fa-check-circle text-7xl my-3"></i>
                     <h2 class="text-2xl">
-                        پرداخت ناموفق
+                        پرداخت موفق
                     </h2>
                 </div>
                 <div class="my-2">
@@ -78,7 +78,7 @@
             }
         },
         setup() {
-            moment.locale("fa", fa)
+            moment.updateLocale("fa", fa)
             jmoment.loadPersian({ usePersianDigits: true })
             return {
                 jmoment

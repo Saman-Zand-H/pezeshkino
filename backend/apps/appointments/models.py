@@ -11,9 +11,9 @@ from payments.enums import PaymentStatus
 
 
 class AppointmentManager(models.Manager):
-    def paid_appointments(self):
+    def get_queryset(self):
         return super().get_queryset().filter(
-            Q(transaction__not=None) 
+            Q(transaction__isnull=False) 
             & Q(transaction__status=PaymentStatus.Complete)
         )
 
@@ -43,7 +43,8 @@ class Appointment(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     
-    objects = AppointmentManager()
+    paid_appointments = AppointmentManager()
+    objects = models.Manager()
     
     @property
     def is_paid(self):

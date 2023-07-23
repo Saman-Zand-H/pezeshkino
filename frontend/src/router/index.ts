@@ -109,6 +109,7 @@ const router = createRouter({
 router.beforeEach(async(to, from) => {
     if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home"].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
+        console.log(is_authenticated)
         if (!is_authenticated) return { name: "login" }
     } else if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()

@@ -34,7 +34,7 @@ class MonetaryTransaction(models.Model):
     payment_time = models.DateTimeField(blank=True, null=True)
     
     def __str__(self):
-        return f"{self.pk} - {self.track_number}"
+        return f"{self.pk} - {self.trackId}"
     
     @property
     def is_success(self):

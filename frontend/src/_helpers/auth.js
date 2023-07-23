@@ -75,11 +75,11 @@ class AuthManager {
     async isAuthenticated() {
         const access_token = localStorage.getItem("access_token")
         const refresh_token = localStorage.getItem("refresh_token")
-        if (!access_token || !refresh_token) {
+        if (!refresh_token) {
             return false
         }
         try {
-            const res = await api.post(
+            const res = await axios.post(
                 "/api/token/verify/", {
                     token: access_token
                 }

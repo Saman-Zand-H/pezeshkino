@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from .exceptions import BankGatewayError
@@ -136,12 +137,15 @@ class InitiateAppointmentView(APIView):
                 
             
         trackId = bank_response.json().get("trackId")
-        MonetaryTransaction.objects.create(by_user=request.user,
-                                           for_user=office.doctor.user,
-                                           amount=office.consultation_fee,
-                                           currency=Currencies.IRT,
-                                           trackId=trackId,
-                                           status=PaymentStatus.Pending)
+        monetary_transaction = MonetaryTransaction.objects.create(
+            by_user=request.user,
+            for_user=office.doctor.user,
+            amount=office.consultation_fee,
+            currency=Currencies.IRT,
+            trackId=trackId,
+            status=PaymentStatus.Pending
+        )
+        appointment.transaction = monetary_transaction
         
         return Response({"message": "appointment was created successfully.",
                          "payLink": f"https://gateway.zibal.ir/start/{trackId}/"},
@@ -157,14 +161,16 @@ class PatientAppointmentsView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class DoctorAppointmentRequestsView(APIView):
+class DoctorAppointmentsView(APIView, PageNumberPagination):
     permission_classes = [IsDoctor]
+    page_size = 20
 
     def get(self, request, format=None):
-        appointments = Appointment.objects.paid_appointments.filter(
+        appointments = Appointment.paid_appointments.filter(
             office__doctor__user=request.user)
-        data = AppointmentSerializer(appointments, many=True).data
-        return Response(data, status.HTTP_200_OK)
+        paginated_result = self.paginate_queryset(appointments, request, view=self)
+        data = AppointmentSerializer(paginated_result, many=True).data
+        return self.get_paginated_response(data)
 
 
 class ValidateTransactionView(APIView):
@@ -294,7 +300,7 @@ class RegisterDoctorView(APIView):
             
             
 class DashboardHomeDataView(APIView):
-    permission_classes = [IsDoctor]
+    permission_classes = [IsAuthenticated]
     
     def get(self, request, format=None):
         doctor = request.user.user_doctor

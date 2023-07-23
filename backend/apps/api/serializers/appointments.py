@@ -11,11 +11,15 @@ class AppointmentSerializer(ModelSerializer):
     office_id = serializers.PrimaryKeyRelatedField(write_only=True,
                                                    queryset=DoctorOffice.objects.all(),
                                                    required=True)
+    patient = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Appointment
-        fields = ["office", "uuid", "office_id", "time", "datetime"]
+        fields = ["office", "patient", "uuid", "office_id", "time", "datetime"]
 
-    def create(self, validated_data):
-        validated_data["office"] = validated_data.get("office_id")
-        return super().create(validated_data)
+    def get_patient(self, obj):
+        # todo: add phone number when it was added to the user model.
+        return {
+            "first_name": obj.patient.first_name,
+            "last_name": obj.patient.last_name
+        }

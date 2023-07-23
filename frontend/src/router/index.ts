@@ -1,3 +1,4 @@
+import AppointmentsDashboardView from '@/views/AppointmentsDashboardView.vue'
 import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
 import GeneralDashboardView from '@/views/GeneralDashboardView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
@@ -96,6 +97,11 @@ const routes: RouteRecordRaw[] = [{
                 path: 'home',
                 name: 'doctor_dashboard_home',
                 component: HomeDashboardView
+            },
+            {
+                path: 'appointments',
+                name: 'doctor_dashboard_appointments',
+                component: AppointmentsDashboardView
             }
         ]
     }
@@ -107,9 +113,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, from) => {
+    // todo : this shit has gone so complicated... handle it.
     if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home"].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
-        console.log(is_authenticated)
+        if (['doctor_dashboard', 'doctor_doshboard_home'].indexOf(String(to.name)) !== -1) {
+            const user_type = JSON.parse(String(localStorage.getItem("user_info"))).user_type
+            if (user_type !== "D") return { name: 'home' }
+        }
         if (!is_authenticated) return { name: "login" }
     } else if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()

@@ -91,6 +91,16 @@ class GetFreeTimesView(APIView):
 class InitiateAppointmentView(APIView):
     permission_classes = [IsAuthenticated]
     
+    def _request_to_bank(self, office, appointment):
+        zibal_request_url = "https://gateway.zibal.ir/v1/request/"
+        zibal_data = {
+            "merchant": getattr(settings, "ZIBAL_MERCHANT", "zibal"),
+            "amount": Currencies.toman_to_rial(office.consultation_fee),
+            "orderId": appointment.uuid.hex,
+            "callbackUrl": "http://localhost:8080/payment_status"
+        }
+        return requests.post(zibal_request_url, json=zibal_data)
+    
     def post(self, request, format=None):        
         data = MakeAppointmentSerializer(data=request.data)
         if not data.is_valid():
@@ -100,7 +110,6 @@ class InitiateAppointmentView(APIView):
         office_id = data.validated_data.get("office_id")
         office = DoctorOffice.objects.get(id=office_id)
         datetime_obj: datetime = data.validated_data.get("datetime")
-        
         if not check_availability(office_id, datetime_obj):
             return Response({"message": "this time is not available for appointment."},
                             status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -117,25 +126,14 @@ class InitiateAppointmentView(APIView):
                                                         time=availability_time_obj,
                                                         datetime=datetime_obj)
                 
-                zibal_request_url = "https://gateway.zibal.ir/v1/request/"
-                zibal_data = {
-                    "merchant": getattr(settings, "ZIBAL_MERCHANT", "zibal"),
-                    "amount": Currencies.toman_to_rial(office.consultation_fee),
-                    "orderId": appointment.uuid.hex,
-                    "callbackUrl": "http://localhost:8080/payment_status"
-                }
-                bank_response = requests.post(zibal_request_url, json=zibal_data)
-                
+                bank_response = self._request_to_bank(office, appointment)
                 if bank_response.status_code != 200:
-                    raise BankGatewayError({"response": bank_response.json(),
-                                            "request": zibal_data})
+                    raise BankGatewayError({"response": bank_response.json()})
+                
         except BankGatewayError as e:
-            logger.error(
-                f"a problem at zibal gateway: {e}"
-            )
+            logger.error(f"a problem at zibal gateway: {e}")
             return Response({"message": "there's a problem with the gateway."},
                             status=status.HTTP_502_BAD_GATEWAY)
-                
             
         trackId = bank_response.json().get("trackId")
         monetary_transaction = MonetaryTransaction.objects.create(
@@ -151,7 +149,7 @@ class InitiateAppointmentView(APIView):
         
         return Response({"message": "appointment was created successfully.",
                          "payLink": f"https://gateway.zibal.ir/start/{trackId}/"},
-                        status=status.HTTP_200_OK)        
+                        status=status.HTTP_200_OK)   
 
 
 class PatientAppointmentsView(APIView):
@@ -178,18 +176,7 @@ class DoctorAppointmentsView(APIView, PageNumberPagination):
 class ValidateTransactionView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, format=None):
-        data = TrackIdSerializer(data=request.data)
-        
-        if not data.is_valid():
-            return Response({"message": data.errors},
-                            status=status.HTTP_400_BAD_REQUEST)
-            
-        logger.critical(data.data)
-        
-        trackId = data.validated_data.get("trackId")
-        transaction_qs = MonetaryTransaction.objects.filter(trackId=trackId)
-
+    def _handle_bank_request(self, trackId, transaction_qs):
         zibal_verify_url = "https://gateway.zibal.ir/v1/verify/"
         verify_data = {
             "merchant": getattr(settings, "ZIBAL_MERCHANT", "zibal"),
@@ -222,6 +209,19 @@ class ValidateTransactionView(APIView):
             )
             return Response(TransactionSerializer(transaction_qs.last()).data,
                             status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        data = TrackIdSerializer(data=request.data)
+        
+        if not data.is_valid():
+            return Response({"message": data.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
+            
+        logger.critical(data.data)
+        
+        trackId = data.validated_data.get("trackId")
+        transaction_qs = MonetaryTransaction.objects.filter(trackId=trackId)
+        response_data = self._handle_bank_request(trackId, transaction_qs)
         
         # this transaction and appointment is redundant, so we delete it.
         transaction_qs.delete()
@@ -232,6 +232,7 @@ class ValidateTransactionView(APIView):
 class ListByTransactionsView(APIView):
     def get(self, request, format=None):
         return Response(TransactionSerializer(request.user.by_transactions.all(), many=True))
+
 
 class ListForTransactionsView(APIView):
     def get(self, request, format=None):

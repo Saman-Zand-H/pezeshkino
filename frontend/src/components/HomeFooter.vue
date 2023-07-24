@@ -1,31 +1,39 @@
 <template>
-    <div class="block relative top-[26rem] py-12 bg-black text-white w-full">
+    <div class="top-[26rem] py-12 bg-black text-white w-full">
         <div class="flex justify-center items-center mb-6">
             <button class="hover:underline" @click="scrollToTop">
                 Back to top
                 <i class="fas fa-arrow-up"></i>
             </button>
         </div>
-        <div class="grid grid-cols-3 px-24">
-            <div class="flex flex-col space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-24">
+            <span>
                 <a href="github.com/saman-zand-h/" class="flex items-center gap-2">
-                    <i class="fas fab fa-github text-2xl text-cyan-950"></i>
-                    Saman Zand H
+                    <i class="fab fa-github text-2xl text-cyan-950"></i>
+                    Saman-Zand-H
                 </a>
+            </span>
+            <span>
                 <a href="telegram.me/RobSaman" class="flex items-center gap-2">
-                    <i class="fas fab fa-telegram text-cyan-600 text-2xl"></i>
+                    <i class="fab fa-telegram text-cyan-600 text-2xl"></i>
                     RobSaman
                 </a>
-                <a href="instagran.com/t.n.saman" class="flex items-center gap-2">
-                    <i class="fas fab fa-instagram text-white text-2xl"></i>
+            </span>
+            <span>
+                <a href="instagram.com/t.n.saman" class="flex items-center gap-2">
+                    <i class="fab fa-instagram text-white text-2xl"></i>
                     t.n.saman
                 </a>
-            </div>
-            <div></div>
-            <div></div>
+            </span>
+            <span>
+                <a href="linkedin.com/saman-zand-h" class="flex items-center gap-2">
+                    <i class="fab fa-linkedin text-cyan-900 text-2xl"></i>
+                    Saman-Zand-H
+                </a>
+            </span>
         </div>
     </div>
-    <div class="block relative top-[26rem] w-full">
+    <div class="top-[26rem] w-full">
         <div class="block h-6 bg-black border-b-[1px] border-white"></div>
         <div class="block h-6 bg-black border-b-[2px] border-white"></div>
         <div class="block h-6 bg-black border-b-[3px] border-white"></div>

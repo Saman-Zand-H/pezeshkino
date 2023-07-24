@@ -4,7 +4,8 @@ export default {
     namespaced: true,
     state: {
         specialties: [],
-        doctors: []
+        doctors: [],
+        loading: false
     },
     getters: {
         getDisplayNames(state) {
@@ -17,6 +18,9 @@ export default {
         },
         UPDATE_DOCTORS(state, data) {
             state.doctors = data
+        },
+        UPDATE_LOADING(state, data) {
+            state.loading = data
         }
     },
     actions: {
@@ -29,6 +33,7 @@ export default {
             }
         },
         async fetchDoctors({ commit }) {
+            commit("UPDATE_LOADING", true)
             try {
                 const res = await axios.get(
                     `/api/doctor?page=1&name_order=a`)
@@ -36,8 +41,10 @@ export default {
             } catch {
                 console.error("something has gone wrong. please refresh.")
             }
+            commit("UPDATE_LOADING", false)
         },
         async searchDoctors({ commit }, payload) {
+            commit("UPDATE_LOADING", true)
             const searchStr = new URLSearchParams(payload.searchObj).toString()
             const page = payload.page ? payload.page : 1
             try {
@@ -46,6 +53,7 @@ export default {
             } catch {
                 console.error("something went wrong while fetching data. please refresh.")
             }
+            commit("UPDATE_LOADING", false)
         }
     }
 }

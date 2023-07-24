@@ -68,23 +68,15 @@
                     <li>
                         <router-link 
                             :to="{ name: 'home' }" 
-                            class="navbar-link text-black hover:text-black/80"
+                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-4"
                         >
                             صفحه نخست
                         </router-link>
                     </li>
                     <li>
                         <router-link 
-                            :to="{ name: 'about' }" 
-                            class="navbar-link text-black hover:text-black/80"
-                        >
-                            درباره ما
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link 
                             :to="{ name: 'doctors' }" 
-                            class="navbar-link text-black hover:text-black/80"
+                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-4"
                         >
                             پزشکان
                         </router-link>
@@ -140,14 +132,6 @@
                     class="navbar-link text-teal-950 font-bold"
                 >
                     صفحه نخست
-                </router-link>
-            </li>
-            <li class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-300 ease-in py-8">
-                <router-link 
-                    :to="{ name: 'about' }" 
-                    class="navbar-link text-teal-950 font-bold"
-                >
-                    درباره ما
                 </router-link>
             </li>
             <li class="border-y border-transparent hover:border-black hover:cursor-pointer transition-colors duration-300 ease-in py-8">

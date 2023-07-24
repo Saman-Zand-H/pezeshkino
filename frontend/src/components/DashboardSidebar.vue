@@ -25,14 +25,14 @@
                     ملاقات ها
                 </span>
             </router-link>
-            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
+            <router-link :to="{ name: 'doctor_dashboard_offices' }" class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
                     <i class="fa fa-building"></i>
                 </span>
                 <span v-if="sidebarActive" class="text-sm text-slate-600">
                     مطب ها
                 </span>
-            </li>
+            </router-link>
             <!--todo:this feature will be added in the next update.-->
             <!-- <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
@@ -42,31 +42,57 @@
                     امور مالی
                 </span>
             </li> -->
-            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
+            <router-link :to="{ name: 'doctor_dashboard_comments' }" class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
                     <i class="fa fa-comment"></i>
                 </span>
                 <span v-if="sidebarActive" class="text-sm text-slate-600">
                     نظرات
                 </span>
-            </li>
-            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
+            </router-link>
+            <button @click.prevent="logOut" class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
                     <i class="fa fa-sign-out"></i>
                 </span>
                 <span v-if="sidebarActive" class="text-sm text-slate-600">
                     خروج
                 </span>
-            </li>
+            </button>
         </ul>
     </aside>
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
+
     export default {
         name: 'DashbaordSidebar',
         props: {
             sidebarActive: Boolean
+        },
+        methods: {
+            ...mapActions(["logout"]),
+            logOut(e) {
+                const swalConf = {
+                    title: 'آیا اطمینان دارید که میخواهید از حساب کاربری خود خارج شوید؟',
+                    showDenyButton: true,
+                    confirmButtonText: 'بله',
+                    denyButtonText: "خیر",
+                    customClass: {
+                        denyButton: "bg-red-500",
+                        confirmButton: "bg-green-500"
+                    }
+                }
+                const swalVal = this.$swal.fire(swalConf)
+                swalVal.then(result => {
+                    if (result.isConfirmed) {
+                        this.logout()
+                        this.Authenticated = false
+                        this.$swal.fire({title: 'با موفقیت خارج شدید', icon: "success"})
+                        this.$router.push({name: 'home'})
+                    }
+                })
+            }
         }
     }
 </script>

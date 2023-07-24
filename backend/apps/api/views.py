@@ -28,6 +28,7 @@ from .serializers.users import (CustomRegisterSerializer,
 from .serializers.payments import (TrackIdSerializer, 
                                    TransactionSerializer)
 from .serializers.doctors import (OfficeIdSerializer, 
+                                  DoctorOfficeSerializer,
                                   MakeAppointmentSerializer,
                                   ReviewSerializer,
                                   RegisterDoctorSerializer)
@@ -301,7 +302,7 @@ class RegisterDoctorView(APIView):
             
             
 class DashboardHomeDataView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsDoctor]
     
     def get(self, request, format=None):
         doctor = request.user.user_doctor
@@ -320,3 +321,11 @@ class DashboardHomeDataView(APIView):
         data["weekly_income"] = sum(i["income"] for i in data["revenue_for_week"])
         return Response(data, status=status.HTTP_200_OK)
 
+
+class GetDoctorOfficesView(APIView):
+    permission_classes = [IsDoctor]
+    
+    def get(self, request, format=None):
+        doctor = request.user.user_doctor
+        data = DoctorOfficeSerializer(doctor.doctor_offices.all(), many=True).data
+        return Response(data, status=status.HTTP_200_OK)

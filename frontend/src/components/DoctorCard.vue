@@ -1,6 +1,6 @@
 <template>
     <router-link 
-                 class="flex flex-col card relative rounded-lg border max-w-none border-slate-200 overflow-hidden shadow-lg w-80 aspect-square pb-3 gap-5 transition-all duration-300 hover:ring-sky-900/50 hover:scale-105" 
+                 class="flex flex-col relative card rounded-lg border max-w-none border-slate-200 overflow-hidden shadow-lg w-80 h-80 pb-3 gap-5 transition-all duration-300 hover:ring-sky-900/50 hover:scale-105" 
                  :to="{ 'name': 'doctor', 'params': { 'username': username } }" 
                  @mouseover="mouseoverCard" 
                  @mouseout="mouseoutCard"

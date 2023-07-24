@@ -8,7 +8,7 @@
             </div>
 
             <nav>
-                <ul class="md:flex hidden lg:gap-20 gap-12 mx-5 flex-row-reverse flex-wrap items-center ms-20">
+                <ul class="md:flex hidden lg:gap-14 gap-12 mx-5 flex-row-reverse flex-wrap items-center ms-20">
                     <li v-if="Authenticated" class="relative">
                         <Menu as="div" class="relative inline-block text-right">
                             <div>
@@ -43,6 +43,15 @@
                                                 >
                                                 نوبت های من
                                                 <i class="fa fa-calendar-days px-2"></i>
+                                            </router-link>
+                                        </MenuItem>
+                                        <MenuItem v-if="user.user_type === 'D'" v-slot="{ dropdownActive }" class="py-4">
+                                            <router-link
+                                                :to="{ name: 'doctor_dashboard_home' }"
+                                                :class="[dropdownActive ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-3 text-sm']"
+                                                >
+                                                داشبورد
+                                                <i class="fa fa-dashboard px-2"></i>
                                             </router-link>
                                         </MenuItem>
                                         <MenuItem v-slot="{ dropdownActive }" class="py-4">
@@ -108,6 +117,12 @@
                         <router-link :to="{ name: 'home' }" class="w-full">
                             نوبت های من
                             <i class="fa fa-calendar-days mx-2"></i>
+                        </router-link>
+                    </li>
+                    <li v-if="user.user_type === 'D'" class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">
+                        <router-link :to="{ name: 'doctor_dashboard_home' }" class="w-full">
+                            داشبورد
+                            <i class="fa fa-dashboard mx-2"></i>
                         </router-link>
                     </li>
                     <li class="border-y border-transparent hover:border-gray-300 hover:cursor-pointer transition-colors duration-200 ease-in py-8">

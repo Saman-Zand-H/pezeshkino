@@ -319,3 +319,4 @@ class DashboardHomeDataView(APIView):
         }
         data["weekly_income"] = sum(i["income"] for i in data["revenue_for_week"])
         return Response(data, status=status.HTTP_200_OK)
+

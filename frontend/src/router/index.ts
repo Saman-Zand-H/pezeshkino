@@ -1,5 +1,6 @@
 import AppointmentsDashboardView from '@/views/AppointmentsDashboardView.vue'
 import AppointmentsProfileView from '../views/AppointmentsProfileView.vue'
+import CommentsDashboardView from '@/views/CommentsDashboardView.vue'
 import GeneralDashboardView from '@/views/GeneralDashboardView.vue'
 import EditUserProfileView from '../views/EditUserProfileView.vue'
 import GeneralProfileView from '../views/GeneralProfileView.vue'
@@ -102,6 +103,11 @@ const routes: RouteRecordRaw[] = [{
                 path: 'appointments',
                 name: 'doctor_dashboard_appointments',
                 component: AppointmentsDashboardView
+            },
+            {
+                path: 'comments',
+                name: 'doctor_dashboard_comments',
+                component: CommentsDashboardView
             }
         ]
     }

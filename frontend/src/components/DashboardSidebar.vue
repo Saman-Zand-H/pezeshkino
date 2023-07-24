@@ -33,12 +33,21 @@
                     مطب ها
                 </span>
             </li>
-            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
+            <!--todo:this feature will be added in the next update.-->
+            <!-- <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
                 <span class="bg-white shadow-md p-3 rounded-xl">
                     <i class="fa fa-money-bill"></i>
                 </span>
                 <span v-if="sidebarActive" class="text-sm text-slate-600">
                     امور مالی
+                </span>
+            </li> -->
+            <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">
+                <span class="bg-white shadow-md p-3 rounded-xl">
+                    <i class="fa fa-comment"></i>
+                </span>
+                <span v-if="sidebarActive" class="text-sm text-slate-600">
+                    نظرات
                 </span>
             </li>
             <li class="rounded-xl hover:cursor-pointer flex items-center gap-4 hover:bg-slate-200 hover:text-gray-700 transition-colors duration-150 py-2 px-4">

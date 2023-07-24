@@ -53,7 +53,7 @@
         },
         setup() {
             moment.updateLocale("fa", fa)
-            jmoment.loadPersian({dialect: "persian-modern"})
+            jmoment.loadPersian({dialect: "persian-modern", usePersianDigits: true})
 
             return {
                 moment, 

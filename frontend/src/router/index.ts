@@ -132,10 +132,12 @@ router.beforeEach(async(to, from) => {
         const isDoctor = JSON.parse(String(localStorage.getItem("user_info")))?.user_type === "D"
         if (!isAuthenticated || !isDoctor) return { name: 'login' }
     }
+
     if (authenticated_only.indexOf(String(to.name))!==-1) {
         const isAuthenticated = await AuthManager.isAuthenticated()
         if (!isAuthenticated) return { name: 'login' }
     }
+    
      if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
         if (is_authenticated) return { name: 'home' }

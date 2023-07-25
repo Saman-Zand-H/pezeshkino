@@ -27,6 +27,7 @@
     "ol": "^7.4.0",
     "postcss": "^8",
     "register-service-worker": "^1.7.2",
+    "request": "^2.88.2",
     "swiper": "^10.0.4",
     "tailwindcss": "^3.3.2",
     "vee-validate": "^4.10.6",

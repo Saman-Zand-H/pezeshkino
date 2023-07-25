@@ -125,19 +125,20 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, from) => {
-    // todo : this shit has gone so complicated... handle it.
-    if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home", "new_review"].indexOf(String(to.name)) !== -1) {
+    const doctors_only = ["doctor_dashboard", "doctor_dashboard_home", "doctor_dashboard_appointments", "doctor_dashboard_comments"]
+    const authenticated_only = ["user", "profile_edit", "profile_appointments", "new_review"]
+    if (doctors_only.indexOf(String(to.name)) !== -1) {
+        const isAuthenticated = await AuthManager.isAuthenticated()
+        const isDoctor = JSON.parse(String(localStorage.getItem("user_info")))?.user_type === "D"
+        if (!isAuthenticated || !isDoctor) return { name: 'login' }
+    }
+    if (authenticated_only.indexOf(String(to.name))!==-1) {
+        const isAuthenticated = await AuthManager.isAuthenticated()
+        if (!isAuthenticated) return { name: 'login' }
+    }
+     if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
-        if (['doctor_dashboard', 'doctor_doshboard_home'].indexOf(String(to.name)) !== -1) {
-            const user_type = JSON.parse(String(localStorage.getItem("user_info"))).user_type
-            if (user_type !== "D") return { name: 'home' }
-        }
-        if (!is_authenticated) return { name: "login" }
-    } else if (['auth', 'login', 'signup'].indexOf(String(to.name)) !== -1) {
-        const is_authenticated = await AuthManager.isAuthenticated()
-        if (is_authenticated) {
-            return { name: 'home' }
-        }
+        if (is_authenticated) return { name: 'home' }
     }
 })
 

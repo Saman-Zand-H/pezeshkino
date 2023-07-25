@@ -10,19 +10,18 @@ services:
       - ./backend:/usr/src/app/backend/
     depends_on:
       - db
-  frontend:
-    build: frontend
-    # command: npm run serve
-    ports: 
-      - '80:8080'
-    volumes:
-      - ./frontend:/usr/src/app/frontend
-      - /usr/src/app/frontned/node_modules
-    depends_on:
-      - backend
+  # frontend:
+  #   build: frontend
+  #   # command: npm run serve
+  #   ports: 
+  #     - '80:8080'
+  #   volumes:
+  #     - ./frontend:/usr/src/app/frontend
+  #     - /usr/src/app/frontned/node_modules
+  #   depends_on:
+  #     - backend
   db:
-    image: kartoza/postgis:13-master
-    platform: linux/arm64
+    image: postgis/postgis:13-master
     ports:
       - "5432:5432"
     environment:

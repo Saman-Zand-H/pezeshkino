@@ -17,7 +17,7 @@ services:
       - '80:8080'
     volumes:
       - ./frontend:/usr/src/app/frontend
-      - ./frontned/node_modules
+      - /usr/src/app/frontned/node_modules
     depends_on:
       - backend
   db:

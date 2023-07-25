@@ -12,32 +12,32 @@
                         <nav id="homeNavbar">
                             <ul class="lg:flex flex-row flex-wrap items-baseline space-x-10 hidden">
                                 <li>
-                                    <router-link :to="{ name: 'home' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <router-link :to="{ name: 'home' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         صفحه نخست
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="{ name: 'doctors' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <router-link :to="{ name: 'doctors' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         پزشکان
                                     </router-link>
                                 </li>
                                 <li v-if="!Authenticated">
-                                    <router-link :to="{ name: 'doctor_signup' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <router-link :to="{ name: 'doctor_signup' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         ثبت نام برای پزشکان
                                     </router-link>
                                 </li>
                                 <li v-if="!Authenticated">
-                                    <router-link :to="{ name: 'login' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <router-link :to="{ name: 'login' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         ورود / ثبت نام
                                     </router-link>
                                 </li>
                                 <li v-else>
-                                    <router-link :to="{ name: 'user' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <router-link :to="{ name: 'user' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         <i class="fa fa-user text-xl"></i>
                                     </router-link>
                                 </li>
                                 <li v-else>
-                                    <button type="button" @click.prevent="logOut" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-4">
+                                    <button type="button" @click.prevent="logOut" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         خروج
                                         <i class="fa fa-sign-out text-xl"></i>
                                     </button>

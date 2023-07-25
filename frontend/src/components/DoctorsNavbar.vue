@@ -77,7 +77,7 @@
                     <li>
                         <router-link 
                             :to="{ name: 'home' }" 
-                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-4"
+                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-2"
                         >
                             صفحه نخست
                         </router-link>
@@ -85,7 +85,7 @@
                     <li>
                         <router-link 
                             :to="{ name: 'doctors' }" 
-                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-4"
+                            class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-200 p-2"
                         >
                             پزشکان
                         </router-link>

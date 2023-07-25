@@ -110,10 +110,6 @@
         position: relative;
     }
 
-    nav {
-        padding: .8rem
-    }
-
     input[type="radio"]:checked+label {
         border-color: rgb(7 89 133);
     }

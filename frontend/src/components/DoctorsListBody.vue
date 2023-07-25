@@ -4,8 +4,8 @@
             <DoctorsSearchForm />
         </aside>
         <main class="lg:w-3/4 w-full px-8 mt-4 mb-7 flex flex-col items-center gap-7">
-            <div class="flex flex-row flex-wrap gap-7">
-                <div class="flex gap-6 w-full flex-shrink-0 flex-grow-0 flex-wrap" v-if="doctors.loading">
+            <div class="flex flex-row flex-wrap w-full gap-7">
+                <div class="flex gap-6 w-full flex-shrink-0 justify-start flex-grow-0 flex-wrap" v-if="doctors.loading">
                     <div v-for="_ in 6" :key="_" class="flex flex-col animate-pulse card relative rounded-lg border max-w-none overflow-hidden shadow-lg w-72 aspect-square pb-3 gap-5 transition-all duration-300">
                         <div class="-z-50 relative">
                             <div class="w-full aspect-square bg-gray-400/80"></div>
@@ -65,7 +65,6 @@
         methods: {
             ...mapActions({fetchDoctors: "doctors/fetchDoctors"}),
             async pageChanged(value) {
-                console.log(value)
                 this.page = value
                 await this.fetchDoctors(this.page)
             }

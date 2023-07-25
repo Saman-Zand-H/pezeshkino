@@ -51,7 +51,10 @@ export default {
         },
         async searchDoctors({ commit }, payload) {
             commit("UPDATE_LOADING", true)
-            const searchStr = new URLSearchParams(payload.searchObj).toString()
+            for (let i in payload) {
+                if (!payload[i]) delete payload[i]
+            }
+            const searchStr = new URLSearchParams(payload).toString()
             const page = payload.page ? payload.page : 1
             try {
                 const res = await axios.get(`/api/doctor?page=${page}&${searchStr}`)

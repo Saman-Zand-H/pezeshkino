@@ -14,7 +14,7 @@
                     جستجو
                 </button>
                 <select
-                    class="hover:bg-slate-200 shadow-md border-x lg:border-x-0 lg:border-y border-slate-800 p-4 bg-white w-full lg:w-1/4 hover:cursor-pointer"
+                    class="shadow-md border-x lg:border-x-0 lg:border-y border-slate-800 p-4 bg-white w-full lg:w-1/4 hover:cursor-pointer"
                     @change="selectProvince" v-model="province" name="province">
                     <option class="text-right" value="">استان</option>
                     <option v-for="ostan in getProvinces" :value="ostan.id" :key="ostan.id" class="text-right">

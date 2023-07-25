@@ -12,7 +12,7 @@
 }
 
 nav {
-  padding: 1.5rem;
+  padding: .9rem;
 
   a {
     font-weight: bold;

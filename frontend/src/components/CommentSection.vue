@@ -42,6 +42,11 @@
 
     export default {
         name: 'CommentSection',
+        data() {
+            return {
+                page: 1
+            }
+        },
         setup() {
             moment.updateLocale("fa", fa)
             jmoment.loadPersian({dialect: 'persian-modern', usePersianDigits: true})

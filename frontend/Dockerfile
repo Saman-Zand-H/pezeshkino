@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:14.4.0-alpine AS development
+FROM node:latest
 
 RUN mkdir /project
 WORKDIR /project
@@ -9,18 +9,4 @@ RUN npm i -g @vue/cli
 RUN npm i -g serve
 RUN npm install
 ENV HOST=0.0.0.0
-CMD ["npm", "run", "build"]
-
-FROM development as dev-envs
-RUN <<EOF
-apk update
-apk add git
-EOF
-
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
 CMD ["npm", "run", "build"]

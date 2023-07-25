@@ -7,6 +7,7 @@ COPY . .
 
 RUN npm i -g @vue/cli
 RUN npm i -g serve
-RUN npm install
+RUN npm install 
+RUN ls
 ENV HOST=0.0.0.0
 CMD ["npm", "run", "build"]

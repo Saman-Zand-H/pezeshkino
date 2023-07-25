@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!loading">
         <div class="grid grid-cols-1">
             <div class="flex flex-col gap-10 rounded-xl shadow-md w-full px-12 py-7 bg-white my-2" v-for="appointment in appointments">
                 <div class="flex justify-between w-full">
@@ -35,6 +35,21 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <div class="grid grid-cols-1 animate-pulse">
+            <div class="flex flex-col gap-10 rounded-xl shadow-md w-full px-12 py-7 bg-gray-200 my-2">
+                <div class="flex justify-between w-full">
+                    <div class="w-full h-3 rounded-full bg-gray-300"></div>
+                    <div class="w-full h-3 rounded-full bg-gray-300"></div>
+                </div>
+                <div class="flex flex-col items-end gap-5">
+                    <div class="w-full h-3 rounded-full bg-gray-300"></div>
+                    <div class="w-full h-3 rounded-full bg-gray-300"></div>
+                    <div class="w-full h-3 rounded-full bg-gray-300"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -48,7 +63,8 @@
         data() {
             return {
                 appointments: [],
-                page: 1
+                page: 1,        
+                loading: false
             }
         },
         setup() {
@@ -61,6 +77,7 @@
             }
         },
         async beforeMount() {
+            this.loading = true
             const url = `/api/doctor_appointments?page=${this.page}`
             try {
                 const res = await api.get(url)
@@ -68,6 +85,7 @@
                     this.appointments = res.data.results
                 }
             } catch (error) {console.error(error)}
+            this.loading = false
         }
     }
 </script>

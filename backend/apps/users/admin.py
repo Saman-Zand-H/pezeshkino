@@ -17,6 +17,7 @@ class UserAdmin(UserAdmin):
                     "email",
                     "first_name",
                     "last_name",
+                    "user_type",
                     "picture"
                 )
             },
@@ -40,6 +41,7 @@ class UserAdmin(UserAdmin):
                 "email",
                 "first_name",
                 "last_name",
+                "user_type",
                 "picture",
                 "password1",
                 "password2",
@@ -48,7 +50,7 @@ class UserAdmin(UserAdmin):
             "wide",
         },
     ), )
-    list_display = ["name", "username", "email"]
-    search_fields = ["name", "username", "email"]
+    list_display = ["name", "username", "user_type"]
+    search_fields = ["name", "username"]
     filter_horizontal = ["groups", "user_permissions"]
     

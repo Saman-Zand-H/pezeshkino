@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!loading">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             <div class="flex flex-row-reverse items-center gap-4 bg-white rounded-2xl p-4 shadow-sm">
                 <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg shadow-md shadow-gray-300">
@@ -44,7 +44,7 @@
             <div class="bg-gradient-to-r shadow-md text-white from-slate-800 to-slate-950 rounded-2xl p-4">
                 <div class="flex justify-between">
                     <div class="font-semibold text-lime-400 text-lg">
-                        20% <i class="fa fa-arrow-up"></i>
+                        <!-- 20% <i class="fa fa-arrow-up"></i> -->
                     </div>
                     <div class="flex flex-col gap-1 items-end">
                         <span class="text-xl font-semibold">{{ weeklyIncome }} تومان</span>
@@ -55,14 +55,14 @@
             </div>
 
             <div class="bg-white rounded-2xl p-4 shadow-md">
-                <div class="flex flex-row-reverse justify-between items-center mb-4">
+                <div class="flex flex-row-reverse px-3 justify-between items-center mb-4">
                     <div class="text-right">
                         <h1 class="text-xl font-semibold">نظرات کاربران</h1>
                         <span class="text-xs">این لیستی از جدید ترین نظرات کاربران است</span>
                     </div>
-                    <div class="flex-shrink-0 text-sm font-medium">
+                    <router-link :to="{ name: 'doctor_dashboard_comments' }" class="flex-shrink-0 text-xs font-medium">
                         مشاهده همه
-                    </div>
+                    </router-link>
                 </div>
                 <div class="flex flex-col mt-8">
                     <div class="overflow-x-auto rounded-2xl">
@@ -110,6 +110,41 @@
             </div>
         </div>
     </div>
+    <div class="animate-pulse" v-else>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="flex flex-row-reverse items-center gap-4 bg-gray-200 rounded-2xl p-4 shadow-sm">
+                <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-gray-200 to-gray-400 rounded-lg shadow-md shadow-gray-300"></div>
+                <div class="flex flex-col items-end">
+                    <span class="bg-gray-300 h-2 w-full rounded-2xl"></span>
+                </div>
+            </div>
+            <div class="flex flex-row-reverse items-center gap-4 bg-gray-200 rounded-2xl p-4 shadow-sm">
+                <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-gray-200 to-gray-400 rounded-lg shadow-md shadow-gray-300"></div>
+                <div class="flex flex-col items-end">
+                    <span class="bg-gray-300 h-2 w-full rounded-2xl"></span>
+                </div>
+            </div>
+            <div class="flex flex-row-reverse items-center gap-4 bg-gray-200 rounded-2xl p-4 shadow-sm">
+                <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-gray-200 to-gray-400 rounded-lg shadow-md shadow-gray-300"></div>
+                <div class="flex flex-col items-end">
+                    <span class="bg-gray-300 h-2 w-full rounded-2xl"></span>
+                </div>
+            </div>
+            <div class="flex flex-row-reverse items-center gap-4 bg-gray-200 rounded-2xl p-4 shadow-sm">
+                <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-gray-200 to-gray-400 rounded-lg shadow-md shadow-gray-300"></div>
+                <div class="flex flex-col items-end">
+                    <span class="bg-gray-300 h-2 w-full rounded-2xl"></span>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
+            <div class="bg-gradient-to-r shadow-md h-64 w-full from-slate-600 to-slate-700 rounded-2xl p-4">
+            </div>
+
+            <div class="bg-gray-200 rounded-2xl w-full h-64">
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -128,10 +163,12 @@
                 numberOfOffices: 0,
                 chartData: [{income: 50, datetime: '2023-01-01T20:20:20'}],
                 weeklyIncome: 0,
-                comments: []
+                comments: [],
+                loading: false
             }
         },
         async beforeCreate() {
+            this.loading = true
             try {
                 const res = await api.get("/api/dashboard/home/")
     
@@ -146,6 +183,7 @@
             } catch (error) {
                 console.error(error)
             }
+            this.loading = false
         }
     }
 </script>

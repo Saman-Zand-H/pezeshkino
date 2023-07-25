@@ -20,8 +20,9 @@ from .enums import (Specialties,
 class Doctor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 related_name="user_doctor",
-                                on_delete=models.CASCADE)
-    bio = models.TextField()
+                                on_delete=models.CASCADE,
+                                limit_choices_to={"user_type": "D"})
+    bio = models.TextField(blank=True, null=True)
     specialty = models.CharField(choices=Specialties.choices, 
                                  max_length=5)
     visit_cost = models.IntegerField(default=20_000, blank=True, null=True)

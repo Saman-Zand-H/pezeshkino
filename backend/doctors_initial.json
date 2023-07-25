@@ -1,0 +1,68 @@
+[
+{
+    "model": "doctors.doctor",
+    "pk": 16,
+    "fields": {
+        "user": 28,
+        "bio": "دکتر گرگ هاوس\r\nیکی از بهترین دکتر هایی ک تو عمرتون دیدید\r\nاگرچه شما ها ارزشی برای چیزایی ک میبینین قائل نیستین ولی ب من خوب توجه کنید",
+        "specialty": "NPHL",
+        "visit_cost": 20000,
+        "upin": "25588664411",
+        "verified": false,
+        "created_at": "1402-05-02 21:26:06.247930+0000"
+    }
+},
+{
+    "model": "doctors.doctor",
+    "pk": 18,
+    "fields": {
+        "user": 29,
+        "bio": "",
+        "specialty": "NS",
+        "visit_cost": 20000,
+        "upin": "25588664411",
+        "verified": false,
+        "created_at": "1402-05-03 07:41:37.856551+0000"
+    }
+},
+{
+    "model": "doctors.doctor",
+    "pk": 19,
+    "fields": {
+        "user": 30,
+        "bio": "",
+        "specialty": "PCP",
+        "visit_cost": 20000,
+        "upin": "25588664411",
+        "verified": false,
+        "created_at": "1402-05-03 07:50:15.938890+0000"
+    }
+},
+{
+    "model": "doctors.doctor",
+    "pk": 20,
+    "fields": {
+        "user": 31,
+        "bio": "",
+        "specialty": "GSE",
+        "visit_cost": 20000,
+        "upin": "25588664411",
+        "verified": false,
+        "created_at": "1402-05-03 07:56:11.866295+0000"
+    }
+},
+{
+    "model": "doctors.doctoroffice",
+    "pk": 8,
+    "fields": {
+        "city": 11,
+        "address": "خیابان 57ام، سمت راست، اولین مطب دست چپ",
+        "office_title": "دکتر هاوس شعبه آفریفا",
+        "consultation_fee": 50000,
+        "location": "SRID=4326;POINT (-5.976562499168034 9.449061825578131)",
+        "phonenumber": "+989226761449",
+        "doctor": 16,
+        "created_at": "1402-05-03 07:35:40.564598+0000"
+    }
+}
+]

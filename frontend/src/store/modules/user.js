@@ -81,6 +81,9 @@ export default {
             localStorage.setItem("user_info", JSON.stringify(data))
         },
         async updateUserInfo({ commit }) {
+            if (!localStorage.getItem("access_token") || !localStorage.getItem("refresh_token")) {
+                return
+            }
             const user_info = localStorage.getItem("user_info")
             if (user_info != null) {
                 commit("UPDATE_USER", JSON.parse(user_info))

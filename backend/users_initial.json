@@ -1,0 +1,90 @@
+[
+{
+    "model": "users.usermodel",
+    "pk": 28,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$GJ3BJggZXrJJmmy27BPvG9$6/LG0VLFbOsTGwqUi4rm4fDi/dlSXwYKZXF6rLdQI/I=",
+        "last_login": null,
+        "username": "greg_house",
+        "email": null,
+        "gender": "justStupid",
+        "city": null,
+        "user_type": "D",
+        "picture": "avatars/main-qimg-c7ab373058327691fe1593beb725bbc5-pjlq.jpeg",
+        "date_joined": "2023-07-24T21:06:59.850Z",
+        "first_name": "گرگ",
+        "last_name": "هاوس",
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.usermodel",
+    "pk": 29,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$1Sa4RK3ozo85AW1pBaGmzf$r/ESB9Och/iwjRCfnkeAdzSYLMgaXdGOO+WVsdw1Ak8=",
+        "last_login": null,
+        "username": "stephen_strange",
+        "email": null,
+        "gender": "justStupid",
+        "city": null,
+        "user_type": "D",
+        "picture": "avatars/top-docs-101518-10.jpg",
+        "date_joined": "2023-07-25T07:41:21.413Z",
+        "first_name": "استیفن",
+        "last_name": "استرینج",
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.usermodel",
+    "pk": 30,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$IsH1WEhH7FZX0wtSb17nwl$JJRvQnY6jEBHmO7ZdNjr5o+fdr3HyRbNYo7rIeoVjes=",
+        "last_login": null,
+        "username": "john_watson",
+        "email": null,
+        "gender": "justStupid",
+        "city": null,
+        "user_type": "D",
+        "picture": "avatars/qcic7jw6ozl51.jpg",
+        "date_joined": "2023-07-25T07:50:00.904Z",
+        "first_name": "جان",
+        "last_name": "واتسون",
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.usermodel",
+    "pk": 31,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$YtY76PBEg8qNDqgCzFNZe4$YXM0Vu2MThGuEud0UFQPWOeIG1qmzRSgQFMFeTkj85A=",
+        "last_login": null,
+        "username": "shaun_murphy",
+        "email": null,
+        "gender": "justStupid",
+        "city": null,
+        "user_type": "D",
+        "picture": "avatars/787a89e5a2deba07a5125c6ab828596d.jpeg",
+        "date_joined": "2023-07-25T07:56:00.349Z",
+        "first_name": "شاون",
+        "last_name": "مورفی",
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

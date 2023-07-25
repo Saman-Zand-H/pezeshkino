@@ -16,7 +16,10 @@
                     </div>
                     <div class="flex flex-col justify-center items-center">
                         <span>
-                            <h2 class="text-base text-gray-600 font-semibold">{{ doctor.user.name }} دکتر</h2>
+                            <h2 class="text-base text-gray-600 font-semibold">
+                                دکتر
+                                {{ doctor.user.name }}
+                            </h2>
                         </span>
                         <span class="mt-2">
                             <small class="text-sm text-gray-500">{{ doctor.get_specialty_display }}</small>
@@ -58,9 +61,14 @@
                 <div class="rounded-lg shadow-xl bg-white border flex flex-col justify-center relative w-full items-center py-8 px-10">
                     <div v-if="tab_page === 'office_info'" class="w-full">
                         <OfficeAppointmentSection 
+                            v-if="!isEmpty(doctor.offices)"
                             :doctor="doctor"
                             :appointment_time="appointment_time" 
                             @appointmentChange="newVal => this.appointment_time=newVal" />
+                        <div class="w-full h-full py-8 bg-white flex text-gray-500 flex-col items-center" v-else>
+                            <span><i class="fa fa-close text-7xl"></i></span>
+                            <span>هیچ مطبی برای پزشک مورد نظر ثبت نشده است</span>
+                        </div>
                     </div>
                     <div v-else-if="tab_page === 'about'" class="w-full'">
                         <fieldset class="text-right px-4 border border-dashed">
@@ -103,7 +111,7 @@
     }
 
     nav {
-        padding: .7rem
+        padding: .8rem
     }
 
     input[type="radio"]:checked+label {
@@ -113,6 +121,7 @@
 
 <script>
 import axios from 'axios'
+import isEmpty from 'lodash/isEmpty'
 import jmoment from 'moment-jalaali'
 import StarRating from 'vue-star-rating'
 import CommentSection from '@/components/CommentSection.vue'
@@ -129,7 +138,8 @@ export default {
     },
     setup() {
         return {
-            jmoment
+            jmoment,
+            isEmpty
         }
     },
     data() {
@@ -142,6 +152,7 @@ export default {
             tab_page: 'office_info',
             appointment_time: null,
             loading: false,
+            page: 1
         }
     },
     async beforeMount() {

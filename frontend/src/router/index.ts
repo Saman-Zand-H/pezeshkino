@@ -126,7 +126,7 @@ const router = createRouter({
 
 router.beforeEach(async(to, from) => {
     // todo : this shit has gone so complicated... handle it.
-    if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home"].indexOf(String(to.name)) !== -1) {
+    if (['user', 'profile_edit', 'profile_appointments', "doctor_dashboard", "doctor_dashboard_home", "new_review"].indexOf(String(to.name)) !== -1) {
         const is_authenticated = await AuthManager.isAuthenticated()
         if (['doctor_dashboard', 'doctor_doshboard_home'].indexOf(String(to.name)) !== -1) {
             const user_type = JSON.parse(String(localStorage.getItem("user_info"))).user_type

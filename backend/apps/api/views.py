@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
+from .paginations import DoctorsListPagination
 from rest_framework.permissions import IsAuthenticated
 
 from .exceptions import BankGatewayError
@@ -161,7 +161,7 @@ class PatientAppointmentsView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class DoctorAppointmentsView(APIView, PageNumberPagination):
+class DoctorAppointmentsView(APIView, DoctorsListPagination):
     permission_classes = [IsDoctor]
     page_size = 20
 

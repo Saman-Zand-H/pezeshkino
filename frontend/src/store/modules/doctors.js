@@ -5,7 +5,8 @@ export default {
     state: {
         specialties: [],
         doctors: [],
-        loading: false
+        loading: false,
+        paginator: {}
     },
     getters: {
         getDisplayNames(state) {
@@ -21,6 +22,9 @@ export default {
         },
         UPDATE_LOADING(state, data) {
             state.loading = data
+        },
+        UPDATE_PAGINATOR(state, data) {
+            state.paginator = data
         }
     },
     actions: {
@@ -32,12 +36,14 @@ export default {
                 console.error("an error has happened while fetching data. refresh")
             }
         },
-        async fetchDoctors({ commit }) {
+        async fetchDoctors({ commit }, page = 1) {
             commit("UPDATE_LOADING", true)
             try {
                 const res = await axios.get(
-                    `/api/doctor?page=1&name_order=a`)
+                    `/api/doctor?page=${page}&name_order=a`)
                 commit("UPDATE_DOCTORS", res.data.results)
+                delete res.data.results
+                commit("UPDATE_PAGINATOR", res.data)
             } catch {
                 console.error("something has gone wrong. please refresh.")
             }

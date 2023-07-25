@@ -5,10 +5,11 @@ WORKDIR /project
 
 COPY . .
 
-RUN npm global add @vue/cli
+RUN npm i -g @vue/cli
+RUN npm i -g serve
 RUN npm install
 ENV HOST=0.0.0.0
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "build"]
 
 FROM development as dev-envs
 RUN <<EOF
@@ -22,4 +23,4 @@ adduser -S --shell /bin/bash --ingroup docker vscode
 EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "build"]

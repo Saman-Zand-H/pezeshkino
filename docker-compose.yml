@@ -22,6 +22,7 @@ services:
       - backend
   db:
     image: postgis/postgis:13-master
+    platform: linux/amd64
     ports:
       - "5432:5432"
     environment:

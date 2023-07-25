@@ -1,11 +1,25 @@
-FROM node:lts-alpine
+FROM --platform=$BUILDPLATFORM node:14.4.0-alpine AS development
 
-WORKDIR /usr/src/app/frontend
+RUN mkdir /project
+WORKDIR /project
 
 COPY . .
 
-RUN npm install && npm install -g vue
+RUN yarn global add @vue/cli
+RUN yarn install
+ENV HOST=0.0.0.0
+CMD ["yarn", "run", "serve"]
 
-EXPOSE 8080
+FROM development as dev-envs
+RUN <<EOF
+apk update
+apk add git
+EOF
 
-RUN npm run serve
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+CMD ["yarn", "run", "serve"]

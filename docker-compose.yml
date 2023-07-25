@@ -3,7 +3,6 @@ version: '3.9'
 services:
   backend:
     build: ./backend
-    platform: linux/amd64
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - '8000:8000'
@@ -22,8 +21,7 @@ services:
     depends_on:
       - backend
   db:
-    image: postgis/postgis:13-master
-    platform: linux/amd64
+    image: kartoza/postgis:13-master
     ports:
       - "5432:5432"
     environment:

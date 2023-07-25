@@ -22,6 +22,7 @@ services:
       - backend
   db:
     image: kartoza/postgis:13-master
+    platform: linux/arm64
     ports:
       - "5432:5432"
     environment:

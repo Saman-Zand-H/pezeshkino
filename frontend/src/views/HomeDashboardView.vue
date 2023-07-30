@@ -161,13 +161,13 @@
                 numberOfPatients: 0,
                 numberOfAppointments: 0,
                 numberOfOffices: 0,
-                chartData: [{income: 50, datetime: '2023-01-01T20:20:20'}],
+                chartData: [],
                 weeklyIncome: 0,
                 comments: [],
                 loading: false
             }
         },
-        async beforeCreate() {
+        async beforeMount() {
             this.loading = true
             try {
                 const res = await api.get("/api/dashboard/home/")

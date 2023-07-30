@@ -191,7 +191,6 @@ class ValidateTransactionView(APIView):
         
         response_data = response.json()
         result_status = response_data.get("result")
-        logger.critical(result_status)
         
         if result_status == 201:
             zibal_inquiry_url = "https://gateway.zibal.ir/v1/inquiry/"
@@ -222,6 +221,8 @@ class ValidateTransactionView(APIView):
         trackId = data.validated_data.get("trackId")
         transaction_qs = MonetaryTransaction.objects.filter(trackId=trackId)
         response_data = self._handle_bank_request(trackId, transaction_qs)
+        if response_data.status_code == 200:
+            return response_data
         
         # this transaction and appointment is redundant, so we delete it.
         transaction_qs.delete()

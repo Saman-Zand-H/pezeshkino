@@ -6,7 +6,7 @@ COPY package.json package.json
 
 RUN npm i -g @vue/cli
 RUN npm i -g serve
-RUN npm install package.json
+RUN npm install
 
 COPY . .
 

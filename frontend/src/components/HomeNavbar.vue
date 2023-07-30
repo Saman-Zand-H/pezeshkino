@@ -31,12 +31,12 @@
                                         ورود / ثبت نام
                                     </router-link>
                                 </li>
-                                <li v-else>
+                                <li v-if="Authenticated">
                                     <router-link :to="{ name: 'user' }" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         <i class="fa fa-user text-xl"></i>
                                     </router-link>
                                 </li>
-                                <li v-else>
+                                <li v-if="Authenticated">
                                     <button type="button" @click.prevent="logOut" class="navbar-link rounded-3xl text-black transition-colors duration-200 hover:bg-gray-300/40 p-2">
                                         خروج
                                         <i class="fa fa-sign-out text-xl"></i>

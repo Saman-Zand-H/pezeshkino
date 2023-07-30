@@ -5,12 +5,12 @@ module.exports = defineConfig({
     devServer: {
         proxy: {
             '^/api': {
-                target: 'http://localhost:8000',
+                target: 'http://172.17.0.1:8000',
                 ws: true,
                 changeOrigin: true
             },
             '^/dj-rest-auth': {
-                target: 'http://localhost:8000',
+                target: 'http://172.17.0.1:8000',
                 ws: true,
                 changeOrigin: true
             },

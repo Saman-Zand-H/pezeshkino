@@ -1,15 +1,11 @@
-FROM node:bullseye
+FROM node:18-alpine
 
-WORKDIR /usr/src/app/frontnend
-
-COPY package.json package.json
-
-RUN npm i -g @vue/cli
-RUN npm i -g serve
-RUN npm install
+WORKDIR /usr/src/app/frontend
 
 COPY . .
 
-ENV HOST=0.0.0.0
+RUN npm install
+
+EXPOSE 8080
 
 CMD ["npm", "run", "build"]

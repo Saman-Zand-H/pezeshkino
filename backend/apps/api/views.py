@@ -156,7 +156,7 @@ class PatientAppointmentsView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, format=None):
-        appointments = request.user.appointments.paid_appointments.all()
+        appointments = Appointment.paid_appointments.filter(patient=self.request.user)
         data = AppointmentSerializer(appointments, many=True).data
         return Response(data, status=status.HTTP_200_OK)
 

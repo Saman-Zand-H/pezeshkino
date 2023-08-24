@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_MET
 class IsSuperuser(BasePermission):
     def has_permission(self, request, view):
         return bool(
-            (request.user and request.user.is_superuser) 
+            (request.user and request.user.is_superuser)
             or request.method in SAFE_METHODS
         )
 
@@ -12,7 +12,7 @@ class IsSuperuser(BasePermission):
 class IsDoctor(IsAuthenticated):
     def has_permission(self, request, view):
         return (
-            super().has_permission(request, view) 
+            super().has_permission(request, view)
             and hasattr(request.user, "user_type")
             and request.user.user_type == "D"
         )

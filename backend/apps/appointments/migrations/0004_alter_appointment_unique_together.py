@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('doctors', '0013_alter_availabilityday_day_of_week'),
-        ('appointments', '0003_delete_onlineappointment'),
+        ("doctors", "0013_alter_availabilityday_day_of_week"),
+        ("appointments", "0003_delete_onlineappointment"),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='appointment',
-            unique_together={('time', 'datetime')},
+            name="appointment",
+            unique_together={("time", "datetime")},
         ),
     ]

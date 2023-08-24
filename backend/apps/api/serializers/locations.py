@@ -7,16 +7,15 @@ class ShahrSerializer(ModelSerializer):
     class Meta:
         model = City
         fields = ["name", "id", "province"]
-        
-        
+
+
 class OstanSerializer(ModelSerializer):
     cities = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Province
         fields = ["name", "cities", "id"]
-        
+
     def get_cities(self, obj):
         cities = obj.cities.all()
         return ShahrSerializer(cities, many=True).data
-        

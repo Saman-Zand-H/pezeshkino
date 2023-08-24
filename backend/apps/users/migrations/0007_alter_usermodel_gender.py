@@ -4,15 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0006_usermodel_city_usermodel_gender'),
+        ("users", "0006_usermodel_city_usermodel_gender"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='usermodel',
-            name='gender',
-            field=models.CharField(choices=[('male', 'مرد'), ('female', 'زن'), ('justStupid', 'ترجیح میدهم نگویم')], default='justStupid', max_length=10),
+            model_name="usermodel",
+            name="gender",
+            field=models.CharField(
+                choices=[
+                    ("male", "مرد"),
+                    ("female", "زن"),
+                    ("justStupid", "ترجیح میدهم نگویم"),
+                ],
+                default="justStupid",
+                max_length=10,
+            ),
         ),
     ]

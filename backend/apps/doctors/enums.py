@@ -40,8 +40,8 @@ class Specialties(models.TextChoices):
     PrimaryCarePhysician = "PCP", "پزشک عمومی"
     MaxillofacialOralSurgeon = "MFOS", "جراح فک و صورت"
     Audiometrist = "AM", "شنوایی سنجی"
-    
-    
+
+
 class DaysOfWeek(models.IntegerChoices):
     Monday = 1, "دوشنبه"
     Tuesday = 2, "سه‌شنبه"
@@ -58,4 +58,3 @@ class TreatmentResults(models.TextChoices):
     Pending = "P", "درحال درمان شدن هستم"
     Canceled = "C", "درمان را ناتمام گذاشتم"
     Other = "O", "سایر موارد"
-    

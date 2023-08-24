@@ -17,54 +17,60 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         request = self.context["request"]
-        data.update({
-            "user": {
-                "username": self.user.username,
-                "first_name": self.user.first_name,
-                "last_name": self.user.last_name,
-                "user_type": self.user.user_type,
-                "city": ShahrSerializer(self.user.city).data,
-                "picture": (request.build_absolute_uri(self.user.picture.url) 
-                            if self.user.picture else None),
-                "gender": self.user.gender
+        data.update(
+            {
+                "user": {
+                    "username": self.user.username,
+                    "first_name": self.user.first_name,
+                    "last_name": self.user.last_name,
+                    "user_type": self.user.user_type,
+                    "city": ShahrSerializer(self.user.city).data,
+                    "picture": (
+                        request.build_absolute_uri(self.user.picture.url)
+                        if self.user.picture
+                        else None
+                    ),
+                    "gender": self.user.gender,
+                }
             }
-        })
+        )
         return data
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
-    picture = serializers.ImageField(use_url=True,
-                                     allow_empty_file=True,
-                                     required=False)
+    picture = serializers.ImageField(
+        use_url=True, allow_empty_file=True, required=False
+    )
     city = ShahrSerializer(read_only=True)
-    city_id = serializers.IntegerField(write_only=True,
-                                       required=False)
-    
+    city_id = serializers.IntegerField(write_only=True, required=False)
+
     class Meta:
         extra_fields = [
-            UserModel.USERNAME_FIELD, 
-            "first_name", 
-            "last_name", 
+            UserModel.USERNAME_FIELD,
+            "first_name",
+            "last_name",
             "user_type",
-            'username',
+            "username",
             "name",
             "city",
             "city_id",
             "gender",
-            "picture"
+            "picture",
         ]
         model = UserModel
-        fields = ('pk', *extra_fields)
+        fields = ("pk", *extra_fields)
         read_only_fields = ["pk", "email", "user_type"]
-    
+
     def validate(self, attrs):
-        if (city_id:=attrs.get("city_id")) and City.objects.filter(id=city_id).exists():
+        if (city_id := attrs.get("city_id")) and City.objects.filter(
+            id=city_id
+        ).exists():
             attrs["city"] = City.objects.get(id=city_id)
             return attrs
         elif not bool(city_id):
             return attrs
         raise serializers.ValidationError("invalid city_id.", "invalid_city")
-    
+
     def validate_username(self, username):
         if self.instance.username == username:
             return username
@@ -74,13 +80,15 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=20)
     last_name = serializers.CharField(max_length=20)
-    picture = serializers.ImageField(use_url=True, 
-                                     allow_empty_file=True,
-                                     required=False)
+    picture = serializers.ImageField(
+        use_url=True, allow_empty_file=True, required=False
+    )
     user_type = serializers.ChoiceField(choices=UserType)
-    city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all(), required=False)
+    city = serializers.PrimaryKeyRelatedField(
+        queryset=City.objects.all(), required=False
+    )
     gender = serializers.ChoiceField(choices=UserGender.choices, required=False)
-    
+
     def get_cleaned_data(self):
         data = {
             "first_name": self.validated_data.get("first_name"),
@@ -92,7 +100,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             if self.validated_data.get(field_name) is not None:
                 data[field_name] = self.validated_data.get(field_name)
         return super().get_cleaned_data() | data
-    
+
     def custom_signup(self, request, user):
         optional_fields = ["city", "gender", "picture"]
         self.cleaned_data = self.get_cleaned_data()

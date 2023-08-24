@@ -5,21 +5,33 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('iranian_cities', '0005_auto_20221004_0004'),
-        ('users', '0005_alter_usermodel_picture'),
+        ("iranian_cities", "0005_auto_20221004_0004"),
+        ("users", "0005_alter_usermodel_picture"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='usermodel',
-            name='city',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='city_users', to='iranian_cities.city'),
+            model_name="usermodel",
+            name="city",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="city_users",
+                to="iranian_cities.city",
+            ),
         ),
         migrations.AddField(
-            model_name='usermodel',
-            name='gender',
-            field=models.CharField(choices=[('male', 'مرد'), ('female', 'زن'), ('justStupid', 'ترجیح میدهم نگویم')], default='justStupid'),
+            model_name="usermodel",
+            name="gender",
+            field=models.CharField(
+                choices=[
+                    ("male", "مرد"),
+                    ("female", "زن"),
+                    ("justStupid", "ترجیح میدهم نگویم"),
+                ],
+                default="justStupid",
+            ),
         ),
     ]

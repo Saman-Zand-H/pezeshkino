@@ -5,35 +5,34 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('doctors', '0002_remove_appointment_appointment_setter'),
+        ("doctors", "0002_remove_appointment_appointment_setter"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Patience',
-            new_name='Patient',
+            old_name="Patience",
+            new_name="Patient",
         ),
         migrations.RenameField(
-            model_name='appointment',
-            old_name='appointment_at',
-            new_name='appointment_for',
+            model_name="appointment",
+            old_name="appointment_at",
+            new_name="appointment_for",
         ),
         migrations.RenameField(
-            model_name='appointment',
-            old_name='patience',
-            new_name='patient',
+            model_name="appointment",
+            old_name="patience",
+            new_name="patient",
         ),
         migrations.RenameField(
-            model_name='doctor',
-            old_name='medical_id',
-            new_name='upin',
+            model_name="doctor",
+            old_name="medical_id",
+            new_name="upin",
         ),
         migrations.RenameField(
-            model_name='medicalrecord',
-            old_name='patience',
-            new_name='patient',
+            model_name="medicalrecord",
+            old_name="patience",
+            new_name="patient",
         ),
     ]

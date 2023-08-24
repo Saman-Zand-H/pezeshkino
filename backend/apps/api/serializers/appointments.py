@@ -8,11 +8,11 @@ from .doctors import DoctorOfficeSerializer
 
 class AppointmentSerializer(ModelSerializer):
     office = DoctorOfficeSerializer(read_only=True)
-    office_id = serializers.PrimaryKeyRelatedField(write_only=True,
-                                                   queryset=DoctorOffice.objects.all(),
-                                                   required=True)
+    office_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=DoctorOffice.objects.all(), required=True
+    )
     patient = serializers.SerializerMethodField(read_only=True)
-    
+
     class Meta:
         model = Appointment
         fields = ["office", "patient", "uuid", "office_id", "time", "datetime"]
@@ -21,5 +21,5 @@ class AppointmentSerializer(ModelSerializer):
         # todo: add phone number when it was added to the user model.
         return {
             "first_name": obj.patient.first_name,
-            "last_name": obj.patient.last_name
+            "last_name": obj.patient.last_name,
         }

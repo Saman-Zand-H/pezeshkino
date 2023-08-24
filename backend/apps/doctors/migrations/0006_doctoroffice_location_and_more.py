@@ -8,50 +8,53 @@ import django_jalali.db.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('doctors', '0005_doctor_verified'),
+        ("doctors", "0005_doctor_verified"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='doctoroffice',
-            name='location',
-            field=django.contrib.gis.db.models.fields.PointField(default=django.contrib.gis.geos.point.Point(-180.0, -90.0), srid=4326),
+            model_name="doctoroffice",
+            name="location",
+            field=django.contrib.gis.db.models.fields.PointField(
+                default=django.contrib.gis.geos.point.Point(-180.0, -90.0), srid=4326
+            ),
         ),
         migrations.AlterField(
-            model_name='appointment',
-            name='appointment_for',
-            field=django_jalali.db.models.jDateTimeField(default=django.utils.timezone.now),
+            model_name="appointment",
+            name="appointment_for",
+            field=django_jalali.db.models.jDateTimeField(
+                default=django.utils.timezone.now
+            ),
         ),
         migrations.AlterField(
-            model_name='appointment',
-            name='created_at',
+            model_name="appointment",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='doctor',
-            name='created_at',
+            model_name="doctor",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='doctoroffice',
-            name='created_at',
+            model_name="doctoroffice",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='medicalrecord',
-            name='created_at',
+            model_name="medicalrecord",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='patient',
-            name='created_at',
+            model_name="patient",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='secretary',
-            name='created_at',
+            model_name="secretary",
+            name="created_at",
             field=django_jalali.db.models.jDateTimeField(auto_now_add=True),
         ),
     ]
